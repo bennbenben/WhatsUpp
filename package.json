@@ -1,0 +1,22 @@
+{
+  "name": "whatsupp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:bennbenben/whatsupp.git",
+  "author": "Ben Loy <bennbenbenl@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "start": "concurrently \"yarn workspace server start\" \"yarn workspace client start\""
+  },
+  "dependencies": {
+    "concurrently": "^7.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}

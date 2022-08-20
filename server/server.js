@@ -1,13 +1,15 @@
-const { response } = require("express");
-const express = require("express");
-const port = process.env.PORT || 3200;
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 3001;
 
-const app = express();
-
-app.get("/test", async (req, res) => {
-    res.send("hello from server")
+app.get('/', (req,res) => {
+  res.send("hello world");
 })
 
-app.listen(port, (req, res) => {
-    console.log(`Server running on port ${port}`);
+app.get('/test/api', (req, res) => {
+    res.send('Hello World!')
+  })
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
 })

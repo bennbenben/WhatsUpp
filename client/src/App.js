@@ -1,12 +1,12 @@
 import logo from "./logo.svg";
 import "./App.css";
-import { useEffect } from "react";
+import React, { useEffect } from 'react'
 
 function App() {
   useEffect(() => {
-    fetch("/test")
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+    fetch("https://whats-upp-server.herokuapp.com/").then((response) => {
+      console.log(response);
+    });
   }, []);
 
   return (
@@ -16,6 +16,15 @@ function App() {
         <p>
           Edit <code>src/App.js</code> and save to reload.
         </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+        <p>return indicator</p>
       </header>
     </div>
   );

@@ -1,15 +1,9 @@
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3001;
+const app = require("./app");
+const connectDB = require("./config/database");
+const port = process.env.PORT || 4000;
 
-app.get('/', (req,res) => {
-  res.send("hello world");
-})
+connectDB();
 
-app.get('/test/api', (req, res) => {
-    res.send('Hello World!')
-  })
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+const server = app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});

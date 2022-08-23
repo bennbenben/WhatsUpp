@@ -1,13 +1,23 @@
 import "./App.css";
 
-function App() {
+const fetchHelloWorld = () => {
+  fetch("/hello-world/test-api")
+  .then(resp => {
+    console.log(resp);
+  })
+}
 
+
+function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>Hello World!</p>
-      </header>
-    </div>
+    <>
+    <button onClick={fetchHelloWorld}>hello world</button>
+      <div className="App">
+        <header className="App-header">
+          <p>Hello World!</p>
+        </header>
+      </div>
+    </>
   );
 }
 

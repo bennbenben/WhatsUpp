@@ -14,9 +14,9 @@ if (process.env.NODE_ENV != "production") {
 }
 
 // import routes
-const user = require("./routes/userRoute");
+// const user = require("./routes/userRoute");
 
-app.use("/api/v1", user);
+// app.use("/api/v1", user);
 
 // Deployment
 __dirname = path.resolve();

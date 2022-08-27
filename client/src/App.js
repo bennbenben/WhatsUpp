@@ -1,6 +1,7 @@
 import "./App.css";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Login from "./components/Login";
+import Chat from "./components/Chat";
 
 const fetchHelloWorld = () => {
   fetch("/hello-world/test-api")
@@ -23,6 +24,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
+        <Route path="/" exact element={<Chat/>} />
       </Routes>
     </BrowserRouter>
   );

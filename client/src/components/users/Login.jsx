@@ -1,6 +1,5 @@
 import React from "react";
 
-
 const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();

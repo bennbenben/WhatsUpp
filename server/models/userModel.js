@@ -30,6 +30,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: "Hello, welcome to my profile! 👋"
     }
+}, {
+    collection: "whats_upp"
 });
 
 module.exports = mongoose.model("User", userSchema);

@@ -1,9 +1,12 @@
 // Import dependencies
 const express = require("express");
-const { loginUser, logoutUser } = require("../controllers/userController");
+const userController = require("../controllers/userController");
 
 // Initialize app (or router)
 const app = express();
 
 // Routes
-app.route("/login").post(loginUser);
+app.route("/register").post(userController.registerUser);
+// app.route("/login").post(loginUser);
+
+module.exports = app;

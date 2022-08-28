@@ -1,6 +1,7 @@
 import "./App.css";
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Login from "./components/users/Login";
+import Register from "./components/users/Register";
 import Chat from "./components/chat/Chat";
 
 const fetchHelloWorld = () => {
@@ -15,7 +16,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/register" exact element={<Register />} />
+        <Route path="/login" exact element={<Login />} />
         <Route path="/" exact element={<Chat/>} />
       </Routes>
     </BrowserRouter>

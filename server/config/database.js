@@ -1,11 +1,23 @@
 const mongoose = require("mongoose");
 
 const connectDB = () => {
-    mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+ 
+    let connectionString = "";
+    let profile = "";
+
+    if (process.env.NODE_ENV == "production") {
+        profile = "cloud";
+        connectionString = process.env.MONGO_URI;
+    } else {
+        profile = "local";
+        connectionString = process.env.MONGO_LOCAL_URI;
+    }
+
+    mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
-        console.log("Mongoose Connected");
-    }).catch((error) => {
-        console.log(error);
+        console.log(`Mongoose Connected on ${profile}`);
+    }).catch((err) => {
+        console.log(err);
     });
 }
 

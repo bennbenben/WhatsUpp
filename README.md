@@ -23,3 +23,7 @@ Full-stack realtime chat application using MERN Stack
 - Search through messages
 - Chat back-ups (through DB dump or file export)
 - Dark mode / dynamic themes
+
+## How to start MongoDB
+`sudo mongod --dbpath ~/data/db` <br>
+`mongo`

@@ -38,11 +38,13 @@
   align-items: center;
   justify-content: space-between;
   min-width: 10vw;
+  /* height: 100px; */
 }
+
 /* may not need this */
-.sidebar__headerRight > .MuiSvgIcon-root {
-    margin-right: 2vw;
-    font-size: 24px !important;
+.sidebar__headerRight > button > .MuiSvgIcon-root {
+  margin-right: 1vw;
+  font-size: 24px !important;
 }
 
 .sidebar__chats {
@@ -51,3 +53,6 @@
   overflow: scroll;
 }
 
+.sidebar__chats::-webkit-scrollbar {
+  display: none;
+}

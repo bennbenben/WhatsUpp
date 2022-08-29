@@ -1,11 +1,11 @@
 // Import dependencies
 const express = require("express");
 const path = require("path");
-const cors = require("cors");
+const errorHandler = require("./middlewares/ErrorHandler");
 
 // Configs
 const app = express();
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/public", express.static("public"));
 
@@ -13,6 +13,7 @@ if (process.env.NODE_ENV != "production") {
   require("dotenv").config({
     path: "server/config/config.env",
   });
+  const cors = require("cors");
   app.use(cors());
 }
 
@@ -20,6 +21,10 @@ if (process.env.NODE_ENV != "production") {
 const user = require("./routes/userRoute");
 
 app.use("/api/v1", user);
+
+
+// Middleware
+app.use(errorHandler);
 
 // Deployment
 __dirname = path.resolve();

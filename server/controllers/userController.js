@@ -1,36 +1,63 @@
 const userModel = require("../models/userModel");
-const bcrypt = require("bcrypt");
+const ErrorResponse = require("../utils/ErrorResponse");
 
-exports.registerUser = async (req, res) => {
+// Register a user
+exports.registerUser = async (req, res, next) => {
   console.log(req.body);
 
   try {
-    const hash = await bcrypt.hash(req.body.password, 10);
-    await userModel.create({
-      name: req.body.name,
-      email: req.body.email,
+    const userDTO = await userModel.create({
       username: req.body.username,
-      password: hash,
+      email: req.body.email,
+      password: req.body.password,
     });
 
-    res.status(200).json({ status: "ok" });
-  } catch (err) {
-    res.json({
-      status: "error",
-      error: "username or email already exists",
-    });
+    sendToken(userDTO, 201, res);
+    // res.status(201).json({
+    //   success: true,
+    //   token: "helloworld",
+    // });
+  } catch (error) {
+    next(error);
   }
 };
 
-// exports.loginUser = async (req, res, next) => {
-//     const {userId, password } = req.body;
+exports.loginUser = async (req, res, next) => {
+  const { email, password } = req.body;
 
-//     const user = await userModel.findOne({
-//         $or: [{ email: userId }, {username: userId}]
-//     }).select("+password");
+  // verification if email or password is provided
+  if (!email || !password) {
+    return next(new ErrorResponse("Please provide an email and password", 400));
+  }
 
-//     if (!user) {
-//         // do something
-//     }
+  // check if user exist in DB
+  try {
+    const userDTO = await userModel.findOne({ email }).select("+password");
 
-// };
+    // if email cannot query the record
+    if (!userDTO) {
+      return next(new ErrorResponse("Invalid credentials", 401));
+    }
+
+    const isMatch = await userDTO.matchPasswords(password);
+
+    // if cannot find a match based on password
+    if (!isMatch) {
+      return next(new ErrorResponse("Invalid credentials", 401));
+    }
+
+    sendToken(userDTO, 200, res);
+    // res.status(200).json({
+    //   success: true,
+    //   token: "helloworld",
+    // });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// common functions 
+const sendToken = (userDTO, statusCode, res) => {
+  const token = userDTO.getSignedToken();
+  res.status(statusCode).json({ success: true, token: token });
+}

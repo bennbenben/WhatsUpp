@@ -7,6 +7,6 @@ const app = express();
 
 // Routes
 app.route("/register").post(userController.registerUser);
-// app.route("/login").post(loginUser);
+app.route("/login").post(userController.loginUser);
 
 module.exports = app;

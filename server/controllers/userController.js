@@ -22,6 +22,7 @@ exports.registerUser = async (req, res, next) => {
   }
 };
 
+// Login a user
 exports.loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -55,6 +56,24 @@ exports.loginUser = async (req, res, next) => {
     next(error);
   }
 };
+
+// Forget password - reset password
+exports.forgetPassword = (req, res, next) => {
+  const email = req.body.email;
+
+  try {
+    const userDTO = await userModel.findOne({email: email});
+
+    if (!userDTO) {
+      return next(new ErrorResponse("Email not found", 404));
+    }
+
+    ======================CONTINUE HERE==============================
+    
+  } catch (error) {
+    
+  }
+}
 
 // common functions 
 const sendToken = (userDTO, statusCode, res) => {

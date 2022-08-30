@@ -28,9 +28,10 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
 
-    avatar: {
-      type: String,
-    },
+    resetPasswordToken: { type: String },
+    resetPasswordExpire: { type: Date },
+
+    avatar: { type: String },
 
     bio: {
       type: String,
@@ -55,11 +56,12 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// Mongoose methods for login, creating jwt
+// Mongoose method - Login
 userSchema.methods.matchPasswords = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
+// Mongoose method - Sign jwt
 userSchema.methods.getSignedToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRY,

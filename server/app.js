@@ -19,8 +19,10 @@ if (process.env.NODE_ENV != "production") {
 
 // import routes
 const user = require("./routes/userRoute");
+const private = require("./routes/privateRoute");
 
 app.use("/api/v1", user);
+app.use("/api/v1/private", private);
 
 
 // Middleware

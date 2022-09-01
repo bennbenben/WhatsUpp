@@ -1,77 +1,89 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Register.css";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmpassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  let navigate = useNavigate();
+  useEffect(() => {
+    if (localStorage.getItem("authToken"))
+      navigate("/helloworld");
+    }, [navigate]);
 
-  const registerUser = async (e) => {
-    // prevent default refresh
+  const registerHandler = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:4000/api/v1/register", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            name, email, username, password
-        })
-    })
-    const responseData = await response.json();
+    const axiosConfig = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
 
-    console.log(responseData);
-    console.log("response Status: ", responseData.status);
-    console.log("response Status Code: ", responseData.statusCode);
-
-    if (responseData.status === "ok") {
-        navigate("/");
+    if (password !== confirmpassword) {
+      setPassword("");
+      setConfirmpassword("");
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+      return setError("Passwords do not match");
     }
-  }
+
+    try {
+      const response = await axios.post(
+        "/api/v1/register", { username, email, password }, axiosConfig
+      );
+    //   console.log(`response.data: ${response.data}`);
+      localStorage.setItem("authToken", response.data.token);
+      navigate("/helloworld");
+      
+    } catch (error) {
+      // console.log(`error: ${error}`);
+      setError(error.response.data.error);
+      setTimeout(() => {
+        setError("");
+      }, 5000);
+    }
+  };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <form onSubmit={registerUser}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <br />
+    <div className="register-view">
+      <form className="register-view__form" onSubmit={registerHandler}>
+        <h3 className="register-view__title">Register</h3>
 
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <br />
+        {error && <span className="error-message">{error}</span>}
 
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <br />
+        <div className="form-group">
+          <label htmlFor="name">Username:</label>
+          <input type="text" required id="name" placeholder="Enter username here" value={username} onChange={(e) => setUsername(e.target.value)} />
+        </div>
 
-        <input
-          type="text"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <br />
+        <div className="form-group">
+          <label htmlFor="email">Email:</label>
+          <input type="email" required id="email" placeholder="Enter email here" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
 
-        <button type="submit">Register</button>
-        <br />
+        <div className="form-group">
+          <label htmlFor="password">Password:</label>
+          <input type="password" required id="password" placeholder="Enter password here" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
 
+        <div className="form-group">
+          <label htmlFor="confirmpassword">Password:</label>
+          <input type="password" required id="confirmpassword" placeholder="Confirm password here" value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)} />
+        </div>
+
+        <button type="submit" className="btn btn-primary">Register</button>
+
+        <span className="register-view__subtext">
+          Already have an account?
+          <Link to="/login">Login</Link>
+        </span>
       </form>
     </div>
   );

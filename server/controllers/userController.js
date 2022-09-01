@@ -60,7 +60,7 @@ exports.loginUser = async (req, res, next) => {
 };
 
 // Forget password - reset password
-exports.forgetPassword = async (req, res, next) => {
+exports.forgotPassword = async (req, res, next) => {
   const email = req.body.email;
 
   try {
@@ -74,6 +74,7 @@ exports.forgetPassword = async (req, res, next) => {
     const resetToken = userDTO.getResetPasswordToken();
     await userDTO.save();
 
+    // send email
     const resetURL = `http://localhost:3000/passwordreset/${resetToken}`;
     const emailMsg = `
       <h1>You have requested a password reset</h1>

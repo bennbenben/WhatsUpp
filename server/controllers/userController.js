@@ -1,5 +1,7 @@
 const userModel = require("../models/userModel");
 const ErrorResponse = require("../utils/ErrorResponse");
+const sendEmail = require("../utils/SendEmail");
+const crypto = require("crypto");
 
 // Register a user
 exports.registerUser = async (req, res, next) => {
@@ -58,25 +60,80 @@ exports.loginUser = async (req, res, next) => {
 };
 
 // Forget password - reset password
-exports.forgetPassword = (req, res, next) => {
+exports.forgotPassword = async (req, res, next) => {
   const email = req.body.email;
 
   try {
-    const userDTO = await userModel.findOne({email: email});
+    const userDTO = await userModel.findOne({ email: email });
 
     if (!userDTO) {
-      return next(new ErrorResponse("Email not found", 404));
+      return next(new ErrorResponse("Email could not be found", 404));
     }
 
-    ======================CONTINUE HERE==============================
-    
-  } catch (error) {
-    
-  }
-}
+    // add a new field to this userDTO object, and return the resetToken
+    const resetToken = userDTO.getResetPasswordToken();
+    await userDTO.save();
 
-// common functions 
+    // send email
+    const resetURL = `http://localhost:3000/passwordreset/${resetToken}`;
+    const emailMsg = `
+      <h1>You have requested a password reset</h1>
+      <p>Please go to this link to reset your password</p>
+      <a href="${resetURL}" clicktracking=off>${resetURL}</a>
+    `;
+
+    try {
+      await sendEmail({
+        to: userDTO.email,
+        subject: "Password reset request",
+        text: emailMsg,
+      });
+
+      res.status(200).json({
+        success: true,
+        data: "Email sent",
+      });
+    } catch (error) {
+      userDTO.resetPasswordToken = undefined;
+      userDTO.resetPasswordExpire = undefined;
+
+      await userDTO.save();
+      return next(new ErrorResponse("Email could not be sent", 500));
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.resetPassword = async (req, res, next) => {
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
+
+  try {
+    const userDTO = await userModel.findOne({
+      resetPasswordToken: resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!userDTO) {
+      next(new ErrorResponse("Invalid reset token", 400));
+    }
+
+    userDTO.password = req.body.password;
+    userDTO.resetPasswordToken = undefined;
+    userDTO.resetPasswordExpire = undefined;
+
+    await userDTO.save();
+    return res.status(201).json({ success: true, data: "Password Reset Success" });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// common functions
 const sendToken = (userDTO, statusCode, res) => {
   const token = userDTO.getSignedToken();
   res.status(statusCode).json({ success: true, token: token });
-}
+};

@@ -8,7 +8,7 @@ const app = express();
 // Routes
 app.route("/register").post(userController.registerUser);
 app.route("/login").post(userController.loginUser);
-app.route("/forgetpassword").post(userController.forgetPassword);
+app.route("/forgotpassword").post(userController.forgotPassword);
 app.route("/resetpassword/:resetToken").post(userController.resetPassword);
 
 module.exports = app;

@@ -5,6 +5,9 @@ const ErrorResponse = require("../utils/ErrorResponse");
 exports.protect = async (req, res, next) => {
   let token;
 
+  console.log("req is: ", req);
+  console.log("req.headers is: ", req.headers);
+
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     // Bearer <jsonwebtoken: long strings>
     token = req.headers.authorization.split(" ")[1];
@@ -12,7 +15,7 @@ exports.protect = async (req, res, next) => {
 
   // if there was no token inside the headers
   if (!token) {
-    return next(new ErrorResponse("Not authorized to access this route", 401));
+    return next(new ErrorResponse("No token inside the headers. Not authorized to access this route", 401));
   }
 
   try {

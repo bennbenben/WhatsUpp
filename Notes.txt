@@ -1,0 +1,15 @@
+collection 1
+rooms = {
+    name:
+    _id:
+}
+
+So what i have done
+
+Schema created
+controller with routes created
+router with routes created
+
+now need to see how to call the controller in ReactJS
+
+Before commit: need change back the local connectionURI

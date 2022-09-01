@@ -18,8 +18,10 @@ if (process.env.NODE_ENV != "production") {
 
 // import routes
 const user = require("./routes/userRoute");
+const chatRouter = require('./routes/chatRoutes')
 
 app.use("/api/v1", user);
+app.use('/api/v2/chats', chatRouter)
 
 // Deployment
 __dirname = path.resolve();

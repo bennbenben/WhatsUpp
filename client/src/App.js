@@ -21,13 +21,13 @@ const App = () => {
           <Chat />
         </div>
 
-        <BrowserRouter>
+        {/* <BrowserRouter>
           <Routes>
             <Route path="/register" exact element={<Register />} />
             <Route path="/login" exact element={<Login />} />
             <Route path="/testing" exact element={<Chat />} />
           </Routes>
-        </BrowserRouter>
+        </BrowserRouter> */}
       </div>
     </div>
   );

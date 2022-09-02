@@ -1,25 +1,44 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { Avatar, IconButton } from "@mui/material";
 import { AttachFile, MoreVert, SearchOutlined } from "@mui/icons-material";
-import InsertEmoticonIcon from '@mui/icons-material/InsertEmoticon';
-import MicIcon from '@mui/icons-material/Mic';
+import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import MicIcon from "@mui/icons-material/Mic";
 
 import "./Chat.css";
 
 export default function Chat() {
   const [seedString, setSeedString] = useState("");
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState("");
+  const { roomId } = useParams();
+  const [roomName, setRoomName] = useState("");
+
+  useEffect(() => {
+    if (roomId) {
+      const fetchAPI = async () => {
+        const res = await fetch(`http://localhost:4000/api/v2/chats/${roomId}`);
+        const data = await res.json();
+        setRoomName(data.name);
+      };
+      fetchAPI();
+    }
+  }, [roomId]);
 
   useEffect(() => {
     setSeedString(Math.floor(Math.random() * 5000));
-  }, []);
+  }, [roomId]);
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log("message sent", input)
-    setInput("")
-  }
+    console.log("message sent", input);
+    setInput("");
+  };
+
+  // pull msg from DB
+  // key value
+  // msg self
+  // from, To
 
   return (
     <div className="chat">
@@ -28,7 +47,7 @@ export default function Chat() {
           src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`}
         />
         <div className="chat__headerInfo">
-          <h3>Room name</h3>
+          <h3>{roomName || "Room name"}</h3>
           <p>Last seen at ...</p>
         </div>
         <div className="chat__headerRight">
@@ -59,8 +78,15 @@ export default function Chat() {
         <InsertEmoticonIcon />
         <form>
           {/* May need to change to useRef, otherwise input state keep changing, heavy on database? */}
-          <input value={input} onChange={e => setInput(e.target.value)} type="text" placeholder="Type a message..." />
-          <button onClick={sendMessage} type="submit">Send a message</button>
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            placeholder="Type a message..."
+          />
+          <button onClick={sendMessage} type="submit">
+            Send a message
+          </button>
         </form>
         <MicIcon />
       </div>

@@ -42,6 +42,23 @@ module.exports = {
         return res.json(chatrooms)
     },
 
+    showChatroom: async (req, res) => {
+        // chatroomModel.watch().on("change", (data) => {
+        //     console.log( "watchdata here", { data } )
+        // })
+        console.log('showChatroom ran')
+        let chatroom = {}
+        try {
+            const chatId = req.params.id
+            console.log('chatId',chatId)
+            chatroom = await chatroomModel.findById(chatId);
+        } catch (err) {
+            res.status(500)
+            return res.json({error: "Failed to show chat"})
+        }
+        return res.json(chatroom)
+    },
+
     // show: async (req, res) => {
     //     try {
     //         const animalId = req.params.id

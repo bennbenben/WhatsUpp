@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import "./SidebarChat.css";
 import { Avatar } from "@mui/material";
 
@@ -15,7 +16,7 @@ function SidebarChat({ id, name, addNewChat }) {
     // creating room for chat - can consider using modal instead of prompt
     const roomName = prompt("Please enter name for chat");
 
-    const data = { name: roomName }
+    const data = { name: roomName };
 
     fetch(`http://localhost:4000/api/v2/chats`, {
       method: "POST",
@@ -31,20 +32,22 @@ function SidebarChat({ id, name, addNewChat }) {
         console.log(jsonResponse);
       })
       .catch((error) => {
-        console.log('Error:', error)
-      })
+        console.log("Error:", error);
+      });
   };
 
   return !addNewChat ? (
-    <div className="sidebarChat">
-      <Avatar
-        src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`}
-      />
-      <div className="sidebarChat__info">
-        <h2>Room name : {name}</h2>
-        <p>Last message...</p>
+    <Link to={`/rooms/${id}`}>
+      <div className="sidebarChat">
+        <Avatar
+          src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`}
+        />
+        <div className="sidebarChat__info">
+          <h2>Room name : {name}</h2>
+          <p>Last message...</p>
+        </div>
       </div>
-    </div>
+    </Link>
   ) : (
     <div onClick={createChat} className="sidebarChat">
       <h2>Add new Chat</h2>

@@ -1,4 +1,5 @@
 const chatroomModel = require('../models/chatroom')
+const messagesModel = require('../models/messages')
 
 module.exports = {
     createChatroom: async (req, res) => {
@@ -59,16 +60,34 @@ module.exports = {
         return res.json(chatroom)
     },
 
-    // show: async (req, res) => {
-    //     try {
-    //         const animalId = req.params.id
-    //         // -__v means minus, the field, exclude the version field
-    //         // or -name -species etc.
-    //         const animals = await animalModel.findById(animalId).select('-__v')
-    //         return res.json(animals)
-    //     } catch (err) {
-    //         res.status(500)
-    //         return res.json({error: `Fail to get animal of id ${animalId}`})
-    //     }
-    // },
+    listMessage: async (req, res) => {
+        let messages = []
+        
+        // chatroomModel.watch().on("change", (data) => {
+        //     console.log( "watchdata here", { data } )
+        // })
+
+        try {
+            messages = await messagesModel.find({ chatId : req.params.id }).exec()
+            // need to sort messages here by timestamp
+            // and also install luxon to post currentTimenNow
+        } catch (err) {
+            res.status(500)
+            return res.json({error: "Failed to list messages"})
+        }
+
+        return res.json(messages)
+    },
+
+    createMessage: async (req, res) => {
+        console.log('create message ran')
+        try {
+            await messagesModel.create(req.body)
+        } catch (err) {
+            res.status(500)
+            return res.json({error: "Failed to send message"})
+        }
+
+        return res.status(201).json()
+    },
 }

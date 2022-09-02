@@ -16,7 +16,7 @@ function Login2() {
       user: {
         name: "Bobo Tangina",
         // this key need to change to render user display name
-        displayName: "BoboTan",
+        displayName: "Bobo Tan",
         email: "bobotan@gmail.com",
         // this key need to change in Sidebar.jsx to render user profile
         photoURL: "myphotourl.com"

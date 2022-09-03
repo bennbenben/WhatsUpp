@@ -14,6 +14,8 @@ import HelloWorld from "./components/users/HelloWorld";
 import Hello from "./components/users/Hello";
 import Login2 from "./components/chat/Login2";
 import { useStateValue } from "./StateProvider";
+import ForgotPassword from "./components/users/ForgotPassword"
+import ResetPassword from "./components/users/ResetPassword"
 
 // Styles
 import "./App.css";
@@ -26,15 +28,22 @@ const App = () => {
   return (
     <div>
       <div className="app">
-        {!user ? ( 
-        console.log("this happened") && 
-        <Login />
+        {!user ? (
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+              <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} />
+            </Routes>
+          </BrowserRouter>
         ) : (
           <div className="app__body">
             <BrowserRouter>
               <Sidebar />
               <Routes>
-                <Route path="/rooms/:roomId" element={<Chat />}/>
+                <Route path="/rooms/:roomId" element={<Chat />} />
+                <Route path="/register" element={<Register />} />
               </Routes>
             </BrowserRouter>
           </div>

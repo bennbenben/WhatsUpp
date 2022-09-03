@@ -82,7 +82,7 @@ const Register = () => {
 
         <span className="register-view__subtext">
           Already have an account?
-          <Link to="/login">Login</Link>
+          <Link to="/">Login</Link>
         </span>
       </form>
     </div>

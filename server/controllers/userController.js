@@ -2,6 +2,7 @@ const userModel = require("../models/userModel");
 const ErrorResponse = require("../utils/ErrorResponse");
 const sendEmail = require("../utils/SendEmail");
 const crypto = require("crypto");
+const jwt = require('jsonwebtoken')
 
 // Register a user
 exports.registerUser = async (req, res, next) => {
@@ -49,7 +50,21 @@ exports.loginUser = async (req, res, next) => {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
 
-    sendToken(userDTO, 200, res);
+    // generating the JWT token, different from your common function
+    // as need to add additional data to user payload
+    console.log('generating Jweb token upon login')
+    const userData = {
+      email: userDTO.email,
+      name: userDTO.name,
+      bio: userDTO.bio,
+    }
+    const token = jwt.sign({
+      exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour
+      data: userData,
+    }, process.env.JWT_SECRET)
+    
+    return res.json({token})
+    // sendToken(userDTO, 200, res);
     // res.status(200).json({
     //   success: true,
     //   token: "helloworld",

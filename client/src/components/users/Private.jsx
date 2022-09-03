@@ -16,7 +16,7 @@ const Private = () => {
 
     const fetchPrivateData = async () => {
       const axiosConfig = {
-        header: {
+        headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },

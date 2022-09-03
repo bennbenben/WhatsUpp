@@ -31,7 +31,7 @@ const App = () => {
           <Routes>
             <Route element={<PrivateRoute />} >
               <Route index element={<Hello />} />
-              <Route path="/hello" element={<HelloWorld />} />
+              <Route path="/helloworld" element={<HelloWorld />} />
               <Route path="/private" element={<Private />} />
             </Route>
 

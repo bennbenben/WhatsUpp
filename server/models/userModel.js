@@ -64,9 +64,19 @@ userSchema.methods.matchPasswords = async function (password) {
 
 // Mongoose method - Sign jwt
 userSchema.methods.getSignedToken = function () {
-  return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRY,
-  });
+  return jwt.sign(
+    {
+      id: this._id,
+      name: this.username,
+      email: this.email,
+      bio: this.bio,
+      avatar: this.avatar,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: process.env.JWT_EXPIRY,
+    }
+  );
 };
 
 // Mongoose method - get reset password token

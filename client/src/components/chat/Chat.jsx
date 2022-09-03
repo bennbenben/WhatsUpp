@@ -43,7 +43,7 @@ export default function Chat() {
   }, [roomId]);
 
   const displayMessages = messages?.map((message) => (
-    <p className={`chat__message ${message.name == user.displayName && "chat__receiver"}`}>
+    <p className={`chat__message ${message.name == user.name && "chat__receiver"}`}>
       <span className="chat__name">{message.name}</span>
       {message.message}
       <span className="chat__timestamp">{message.timestamp}</span>
@@ -56,7 +56,7 @@ export default function Chat() {
     setInput("");
     let data = {
       chatId: roomId,
-      name: user.displayName,
+      name: user.name,
       message: input,
       timestamp: DateTime.now().toUnixInteger(),
     }

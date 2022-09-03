@@ -32,18 +32,18 @@ const Login = () => {
   const loginHandler = async (e) => {
     e.preventDefault();
 
-    let result = {
-      key1: "blabla",
-      key2: "blabla2",
-      user: {
-        name: "Bobo Tangina",
-        // this key need to change to render user display name
-        displayName: "Bobo Tan",
-        email: "bobotan@gmail.com",
-        // this key need to change in Sidebar.jsx to render user profile
-        photoURL: "myphotourl.com"
-      }
-    }
+    // let result = {
+    //   key1: "blabla",
+    //   key2: "blabla2",
+    //   user: {
+    //     name: "Bobo Tangina",
+    //     // this key need to change to render user display name
+    //     displayName: "Bobo Tan",
+    //     email: "bobotan@gmail.com",
+    //     // this key need to change in Sidebar.jsx to render user profile
+    //     photoURL: "myphotourl.com"
+    //   }
+    // }
 
     const axiosConfig = {
       header: {
@@ -73,7 +73,8 @@ const Login = () => {
 
       dispatch({
         type: actionTypes.SET_USER,
-        user: result.user
+        user: user
+        // user: result.user
       })
       
       

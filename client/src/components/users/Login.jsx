@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Login.css";
+import { useStateValue } from "../../StateProvider";
+import { actionTypes } from "../../Reducer";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -12,7 +14,10 @@ const Login = () => {
 
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
-      navigate("/");
+      dispatch({
+        type: actionTypes.SET_USER,
+        user: result.user
+      });
     }
   }, []);
 
@@ -50,9 +55,11 @@ const Login = () => {
   };
 
   return (
-    <div className="login-view">
+    <div className="login">
+    <div className="login__container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt=""/>
+      <div className="login__text"><h1>Sign in to Whatsupp</h1></div>
       <form className="login-view__form" onSubmit={loginHandler}>
-        <h3 className="login-view__title">Login</h3>
 
         {error && <span className="error-message">{error}</span>}
 
@@ -73,6 +80,7 @@ const Login = () => {
           <Link to="/register">Register</Link>
         </span>
       </form>
+    </div>
     </div>
   );
 };

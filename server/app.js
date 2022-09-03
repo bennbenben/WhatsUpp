@@ -24,11 +24,10 @@ const chatRouter = require('./routes/chatRoutes')
 
 app.use("/api/v1", user);
 app.use("/api/v1/private", private);
-
+app.use('/api/v2/chats', chatRouter);
 
 // Middleware
 app.use(errorHandler);
-app.use('/api/v2/chats', chatRouter)
 
 // Deployment
 __dirname = path.resolve();

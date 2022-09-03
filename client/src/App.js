@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 // Routing
-import PrivateRoute from "./components/routing/PrivateRoute"; 
+import PrivateRoute from "./components/routing/PrivateRoute";
 
 // Components
 import Login from "./components/users/Login";
@@ -20,33 +20,34 @@ import "./App.css";
 import Private from "./components/users/Private";
 
 const App = () => {
-  console.log("APP.JS RENDER")
+  console.log("APP.JS RENDER");
   const [{ user }, dispatch] = useStateValue();
 
   return (
     <div>
       <div className="app">
-        {/* {!user ? (
-          <Login2 />
+        {!user ? ( 
+        console.log("this happened") && 
+        <Login />
         ) : (
           <div className="app__body">
             <BrowserRouter>
               <Sidebar />
               <Routes>
-                <Route
-                  path="/rooms/:roomId"
-                  element={
-                    <>
-                      <Chat />
-                    </>
-                  }
-                />
+                <Route path="/rooms/:roomId" element={<Chat />}/>
               </Routes>
             </BrowserRouter>
-          </div> */}
+          </div>
         )}
       </div>
-      {/* <BrowserRouter>
+    </div>
+  );
+};
+
+export default App;
+
+{
+  /* <BrowserRouter>
             <Routes>
             <Route element={<PrivateRoute />} >
               <Route index element={<Hello />} />
@@ -56,12 +57,8 @@ const App = () => {
 
             <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-            {/* <Route exact path="/forgotpassword" element={<ForgotPassword />} /> */}
-            {/* <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} /> */}
+            <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+            <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} />
             </Routes>
-          </BrowserRouter> */}
-    </div>
-  );
-};
-
-export default App;
+          </BrowserRouter> */
+}

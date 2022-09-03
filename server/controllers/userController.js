@@ -52,19 +52,19 @@ exports.loginUser = async (req, res, next) => {
 
     // generating the JWT token, different from your common function
     // as need to add additional data to user payload
-    console.log('generating Jweb token upon login')
-    const userData = {
-      email: userDTO.email,
-      name: userDTO.name,
-      bio: userDTO.bio,
-    }
-    const token = jwt.sign({
-      exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour
-      data: userData,
-    }, process.env.JWT_SECRET)
+    // console.log('generating Jweb token upon login')
+    // const userData = {
+    //   email: userDTO.email,
+    //   name: userDTO.name,
+    //   bio: userDTO.bio,
+    // }
+    // const token = jwt.sign({
+    //   exp: Math.floor(Date.now() / 1000) + (60 * 60), // 1 hour
+    //   data: userData,
+    // }, process.env.JWT_SECRET)
     
-    return res.json({token})
-    // sendToken(userDTO, 200, res);
+    // return res.json({token})
+    sendToken(userDTO, 200, res);
     // res.status(200).json({
     //   success: true,
     //   token: "helloworld",

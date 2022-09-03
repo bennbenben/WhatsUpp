@@ -55,19 +55,19 @@ const App = () => {
 
 export default App;
 
-{
-  /* <BrowserRouter>
-            <Routes>
-            <Route element={<PrivateRoute />} >
-              <Route index element={<Hello />} />
-                <Route path="/helloworld" element={<HelloWorld />} />
-              <Route path="/private" element={<Private />} />
-              </Route>
+// {
+//   <BrowserRouter>
+//   <Routes>
+//   <Route element={<PrivateRoute />} >
+//     <Route index element={<Hello />} />
+//       <Route path="/helloworld" element={<HelloWorld />} />
+//     <Route path="/private" element={<Private />} />
+//     </Route>
 
-            <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            <Route exact path="/forgotpassword" element={<ForgotPassword />} />
-            <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} />
-            </Routes>
-          </BrowserRouter> */
-}
+//   <Route path="/login" element={<Login />} />
+//     <Route path="/register" element={<Register />} />
+//   <Route exact path="/forgotpassword" element={<ForgotPassword />} />
+//   <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} />
+//   </Routes>
+// </BrowserRouter> 
+// }

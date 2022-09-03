@@ -20,6 +20,7 @@ if (process.env.NODE_ENV != "production") {
 // import routes
 const user = require("./routes/userRoute");
 const private = require("./routes/privateRoute");
+const chatRouter = require('./routes/chatRoutes')
 
 app.use("/api/v1", user);
 app.use("/api/v1/private", private);
@@ -27,6 +28,7 @@ app.use("/api/v1/private", private);
 
 // Middleware
 app.use(errorHandler);
+app.use('/api/v2/chats', chatRouter)
 
 // Deployment
 __dirname = path.resolve();

@@ -4,7 +4,7 @@ import { useReducer } from "react";
 // Import internal dependencies
 import GlobalLoader from "./components/GlobalLoader/GlobalLoader";
 import { initialState, Store } from "./data/Store";
-import { reducerFunction } from "./data/actions/Reducers";
+import { reducerFunction } from "./data/Reducers";
 import App from "./App";
 
 const Providers = () => {

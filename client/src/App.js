@@ -1,73 +1,42 @@
-// React methods
-import { useState } from "react";
+// Import libraries
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-// Routing
+// Import internal components
 import PrivateRoute from "./components/routing/PrivateRoute";
-
-// Components
-import Login from "./components/users/Login";
-import Register from "./components/users/Register";
-import Chat from "./components/chat/Chat";
-import Sidebar from "./components/chat/Sidebar";
-import HelloWorld from "./components/users/HelloWorld";
-import Hello from "./components/users/Hello";
-import Login2 from "./components/chat/Login2";
-import { useStateValue } from "./StateProvider";
-import ForgotPassword from "./components/users/ForgotPassword"
-import ResetPassword from "./components/users/ResetPassword"
-
-// Styles
+import Login from "./components/authentication/Login";
+import Register from "./components/authentication/Register";
+import ForgotPassword from "./components/authentication/ForgotPassword";
+import ResetPassword from "./components/authentication/ResetPassword";
+import WhatsUpp from "./components/chat/WhatsUpp";
 import "./App.css";
-import Private from "./components/users/Private";
+// delete later
+import Private from "./common/Private";
+import PublicRoute from "./components/routing/PublicRoute";
 
 const App = () => {
-  console.log("APP.JS RENDER");
-  const [{ user }, dispatch] = useStateValue();
-
   return (
-    <div>
-      <div className="app">
-        {!user ? (
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route exact path="/forgotpassword" element={<ForgotPassword />} />
-              <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} />
-            </Routes>
-          </BrowserRouter>
-        ) : (
-          <div className="app__body">
-            <BrowserRouter>
-              <Sidebar />
-              <Routes>
-                <Route path="/rooms/:roomId" element={<Chat />} />
-                <Route path="/register" element={<Register />} />
-              </Routes>
-            </BrowserRouter>
-          </div>
-        )}
+    <div className="app">
+      <div className="app__body">
+        <BrowserRouter>
+          <Routes>
+            {/* Protected routes */}
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<WhatsUpp />} />
+            </Route>
+
+            {/* Public routes */}
+            {/* <Route element={<PublicRoute />} > */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/passwordreset/:resetToken" element={<ResetPassword />} />
+            {/* </Route> */}
+
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );
 };
 
 export default App;
-
-// {
-//   <BrowserRouter>
-//   <Routes>
-//   <Route element={<PrivateRoute />} >
-//     <Route index element={<Hello />} />
-//       <Route path="/helloworld" element={<HelloWorld />} />
-//     <Route path="/private" element={<Private />} />
-//     </Route>
-
-//   <Route path="/login" element={<Login />} />
-//     <Route path="/register" element={<Register />} />
-//   <Route exact path="/forgotpassword" element={<ForgotPassword />} />
-//   <Route exact path="/passwordreset/:resetToken" element={<ResetPassword />} />
-//   </Routes>
-// </BrowserRouter> 
-// }

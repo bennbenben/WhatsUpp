@@ -16,7 +16,7 @@ export const reducerFunction = (state, action) => {
       return {
         ...state,
         currentUser: action.payload,
-        isLoading: true,
+        isLoading: false,
       };
 
     case "USER_LOGIN_FAILURE":

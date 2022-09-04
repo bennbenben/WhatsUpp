@@ -2,7 +2,7 @@ import { createContext } from "react";
 
 export const initialState = {
   currentUser: null,
-  isLoading: true,
+  isLoading: false,
 };
 
 export const Store = createContext(null);

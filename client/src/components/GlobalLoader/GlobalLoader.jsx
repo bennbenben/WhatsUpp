@@ -10,9 +10,9 @@ const GlobalLoader = () => {
   const [globalState, dispatch] = useContext(Store);
   const { isLoading } = globalState;
 
-  const handleClose = () => {
-    dispatch(testAction());
-  };
+  // const handleClose = () => {
+  //   dispatch(testAction());
+  // };
 
   if (isLoading) {
     return (
@@ -20,7 +20,7 @@ const GlobalLoader = () => {
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
           open={isLoading}
-          onClick={handleClose}
+          // onClick={handleClose}
         >
           <CircularProgress color="inherit" />
         </Backdrop>

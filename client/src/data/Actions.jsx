@@ -6,17 +6,17 @@ const action_types = {
   USER_LOGOUT: "USER_LOGOUT",
 };
 
-export const testAction = () => ({
-  type: action_types.TEST_ACTION,
-});
+// export const testAction = () => ({
+//   type: action_types.TEST_ACTION,
+// });
 
-export const initUserLogin = (currentUser) => ({
+export const initUserLogin = () => ({
   type: action_types.INIT_USER_LOGIN,
-  payload: currentUser,
 });
 
-export const userLoginSuccess = () => ({
+export const userLoginSuccess = (currentUser) => ({
   type: action_types.USER_LOGIN_SUCCESS,
+  payload: currentUser,
 });
 
 export const userLoginFailure = () => ({

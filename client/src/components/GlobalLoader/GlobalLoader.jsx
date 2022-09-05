@@ -1,10 +1,9 @@
-// Import external dependencies
+// Import libraries
 import { useContext } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
 
-// Import internal dependencies
+// Import internal components
 import { Store } from "../../data/Store";
-import { testAction } from "../../data/Actions";
 
 const GlobalLoader = () => {
   const [globalState, dispatch] = useContext(Store);

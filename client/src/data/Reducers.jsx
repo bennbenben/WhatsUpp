@@ -7,6 +7,7 @@ export const reducerFunction = (state, action) => {
       };
 
     case "INIT_USER_LOGIN":
+    case "INIT_PASSWORD_RESET":
       return {
         ...state,
         isLoading: true,
@@ -20,6 +21,7 @@ export const reducerFunction = (state, action) => {
       };
 
     case "USER_LOGIN_FAILURE":
+    case "PASSWORD_RESET_OUTCOME":
       return {
         ...state,
         isLoading: false,

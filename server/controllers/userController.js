@@ -74,7 +74,7 @@ exports.loginUser = async (req, res, next) => {
   }
 };
 
-// Forget password - reset password
+// Forgot password - reset password
 exports.forgotPassword = async (req, res, next) => {
   const email = req.body.email;
 
@@ -106,7 +106,7 @@ exports.forgotPassword = async (req, res, next) => {
 
       res.status(200).json({
         success: true,
-        data: "Email sent",
+        description: "Email sent",
       });
     } catch (error) {
       userDTO.resetPasswordToken = undefined;

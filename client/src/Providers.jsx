@@ -1,7 +1,7 @@
-// Import external dependencies
+// Import libraries
 import { useReducer } from "react";
 
-// Import internal dependencies
+// Import internal components
 import GlobalLoader from "./components/GlobalLoader/GlobalLoader";
 import { initialState, Store } from "./data/Store";
 import { reducerFunction } from "./data/Reducers";

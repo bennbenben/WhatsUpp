@@ -1,7 +1,9 @@
-import {useState, useEffect, useContext} from "react";
+// Import libraries
+import {useState, useContext} from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
+// Import internal components
 import { initUserLogin, userLoginSuccess, userLoginFailure } from "../../data/Actions";
 import { Store } from "../../data/Store";
 
@@ -23,13 +25,19 @@ const Login2 = () => {
     };
   
   try {
+    // Retrieve JWT token from BE server (as means of authentication)
     const response = await axios.post("/api/v1/login", { email, password }, axiosConfig);
     console.log(`response.data: ${JSON.stringify(response.data)}`);
+
+    // Keep JWT token in localStorage
     localStorage.setItem("authToken", response.data.token);
-    dispatch(userLoginSuccess(response.data.token));
-    const { currentUser } = globalState;
-    console.log("currentUser is: ", JSON.stringify(currentUser));
-    console.log("current context is: ", JSON.stringify(globalState));
+
+    // Decode the remaining Base64 headers and keep required fields in context
+    const base64Payload = JSON.stringify(response.data.token).split(".")[1];
+    // const hdrObjects = window.atob(base64Payload);
+    const userId = JSON.parse(window.atob(base64Payload)).id;
+    console.log("this is userId: ", userId);
+    dispatch(userLoginSuccess(userId));
     navigate("/");
 
   } catch (error) {
@@ -71,6 +79,12 @@ const Login2 = () => {
           Do not have an account?
           <Link to="/register">Register</Link>
         </span>
+
+        <span className="login-view__subtext">
+          Forgot password?
+          <Link to="/forgotpassword">Reset password</Link>
+        </span>
+
       </form>
     </div>
   );

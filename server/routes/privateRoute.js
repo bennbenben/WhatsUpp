@@ -1,7 +1,7 @@
 // Import dependencies
 const express = require("express");
-const {protect} = require("../middlewares/AuthHandler");
-const {getPrivateRoute} = require("../controllers/privateController");
+const { protect } = require("../middlewares/AuthHandler");
+const { getPrivateRoute } = require("../controllers/privateController");
 
 // Initialize app (or router)
 const router = express.Router();

@@ -2,7 +2,7 @@
 import { useReducer } from "react";
 
 // Import internal components
-import GlobalLoader from "./components/common/GlobalLoader";
+import GlobalLoader from "./common/GlobalLoader";
 import { initialState, Store } from "./data/Store";
 import { reducerFunction } from "./data/Reducers";
 import App from "./App";

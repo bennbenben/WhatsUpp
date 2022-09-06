@@ -1,19 +1,16 @@
 const action_types = {
-  TEST_ACTION: "TEST_ACTION",
-  INIT_USER_LOGIN: "INIT_USER_LOGIN",
+  SET_LOADING_FALSE: "SET_LOADING_FALSE",
+  SET_LOADING_TRUE: "SET_LOADING_TRUE",
   USER_LOGIN_SUCCESS: "USER_LOGIN_SUCCESS",
-  USER_LOGIN_FAILURE: "USER_LOGIN_FAILURE",
   USER_LOGOUT: "USER_LOGOUT",
-  INIT_PASSWORD_RESET: "INIT_PASSWORD_RESET",
-  PASSWORD_RESET_OUTCOME: "PASSWORD_RESET_OUTCOME",
 };
 
-// export const testAction = () => ({
-//   type: action_types.TEST_ACTION,
-// });
+export const setLoadingFalse = () => ({
+  type: action_types.SET_LOADING_FALSE,
+});
 
-export const initUserLogin = () => ({
-  type: action_types.INIT_USER_LOGIN,
+export const setLoadingTrue = () => ({
+  type: action_types.SET_LOADING_TRUE,
 });
 
 export const userLoginSuccess = (currentUser) => ({
@@ -21,18 +18,6 @@ export const userLoginSuccess = (currentUser) => ({
   payload: currentUser,
 });
 
-export const userLoginFailure = () => ({
-  type: action_types.USER_LOGIN_FAILURE,
-});
-
 export const userLogout = () => ({
   type: action_types.USER_LOGOUT,
-});
-
-export const initPasswordReset = () => ({
-  type: action_types.INIT_PASSWORD_RESET,
-});
-
-export const passwordResetOutcome = () => ({
-  type: action_types.PASSWORD_RESET_OUTCOME,
 });

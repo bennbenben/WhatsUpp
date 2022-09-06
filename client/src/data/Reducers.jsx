@@ -1,13 +1,12 @@
 export const reducerFunction = (state, action) => {
   switch (action.type) {
-    case "TEST_ACTION":
+    case "SET_LOADING_FALSE":
       return {
         ...state,
         isLoading: false,
       };
 
-    case "INIT_USER_LOGIN":
-    case "INIT_PASSWORD_RESET":
+    case "SET_LOADING_TRUE":
       return {
         ...state,
         isLoading: true,
@@ -17,13 +16,6 @@ export const reducerFunction = (state, action) => {
       return {
         ...state,
         currentUser: action.payload,
-        isLoading: false,
-      };
-
-    case "USER_LOGIN_FAILURE":
-    case "PASSWORD_RESET_OUTCOME":
-      return {
-        ...state,
         isLoading: false,
       };
 

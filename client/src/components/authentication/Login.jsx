@@ -1,10 +1,10 @@
 // Import libraries
-import {useState, useContext} from "react";
+import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 // Import internal components
-import { initUserLogin, userLoginSuccess, userLoginFailure } from "../../data/Actions";
+import { setLoadingTrue, userLoginSuccess, setLoadingFalse } from "../../data/Actions";
 import { Store } from "../../data/Store";
 
 const Login2 = () => {
@@ -16,7 +16,7 @@ const Login2 = () => {
 
   const loginHandler = async (e) => {
     e.preventDefault();
-    dispatch(initUserLogin());
+    dispatch(setLoadingTrue());
 
     const axiosConfig = {
       headers: {
@@ -29,7 +29,7 @@ const Login2 = () => {
     const response = await axios.post("/api/v1/login", { email, password }, axiosConfig);
     console.log(`response.data: ${JSON.stringify(response.data)}`);
 
-    // Keep JWT token in localStorage
+    // Keep JWT token in localStorage (change to cookie later)
     localStorage.setItem("authToken", response.data.token);
 
     // Decode the remaining Base64 headers and keep required fields in context
@@ -45,7 +45,7 @@ const Login2 = () => {
     setTimeout(() => {
       setError("");
     }, 5000);
-    dispatch(userLoginFailure());
+    dispatch(setLoadingFalse());
     };
   };
   

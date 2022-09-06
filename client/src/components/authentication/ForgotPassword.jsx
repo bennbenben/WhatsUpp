@@ -3,18 +3,17 @@ import { useState, useContext } from "react";
 import axios from "axios";
 // Import internal components
 import { Store } from "../../data/Store";
-import { initPasswordReset, passwordResetOutcome } from "../../data/Actions";
+import { setLoadingFalse, setLoadingTrue } from "../../data/Actions";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [globalState, dispatch] = useContext(Store);
 
   const forgotPasswordHandler = async (e) => {
     e.preventDefault();
-    dispatch(initPasswordReset());
+    dispatch(setLoadingTrue());
 
     const axiosConfig = {
       headers: {
@@ -36,7 +35,7 @@ const ForgotPassword = () => {
       }, 5000);
     };
 
-    dispatch(passwordResetOutcome());
+    dispatch(setLoadingFalse());
   };
 
   return (

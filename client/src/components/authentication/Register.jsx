@@ -6,7 +6,7 @@ import axios from "axios";
 // Import internal components
 import "./Register.css";
 import { Store } from "../../data/Store";
-import { userLoginSuccess } from "../../data/Actions";
+import { setLoadingFalse, setLoadingTrue, userLoginSuccess } from "../../data/Actions";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -19,9 +19,10 @@ const Register = () => {
 
   const registerHandler = async (e) => {
     e.preventDefault();
+    dispatch(setLoadingTrue());
 
     const axiosConfig = {
-      header: {
+      headers: {
         "Content-Type": "application/json",
       },
     };
@@ -32,6 +33,7 @@ const Register = () => {
       setTimeout(() => {
         setError("");
       }, 5000);
+      dispatch(setLoadingFalse());
       return setError("Passwords do not match");
     }
 
@@ -50,7 +52,6 @@ const Register = () => {
       navigate("/");
 
     //   console.log(`response.data: ${response.data}`);
-      navigate("/");
       
     } catch (error) {
       // console.log(`error: ${error}`);
@@ -58,6 +59,7 @@ const Register = () => {
       setTimeout(() => {
         setError("");
       }, 5000);
+      dispatch(setLoadingFalse());
     }
   };
 

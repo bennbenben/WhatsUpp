@@ -1,5 +1,8 @@
+// Import libraries
 import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
+
+// Import internal components
 import { Store } from "../../data/Store";
 
 const PrivateRoute = () => {

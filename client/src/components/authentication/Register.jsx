@@ -30,24 +30,26 @@ const Register = () => {
     if (password !== confirmpassword) {
       setPassword("");
       setConfirmpassword("");
+      dispatch(setLoadingFalse());
       setTimeout(() => {
         setError("");
       }, 5000);
-      dispatch(setLoadingFalse());
       return setError("Passwords do not match");
     }
 
     try {
       // Retrieve JWT token from BE server (as means of authentication)
       const response = await axios.post( "/api/v1/register", { username, email, password }, axiosConfig);
+      console.log("this is response: ", response);
       
       // Keep JWT token in localStorage
       localStorage.setItem("authToken", response.data.token);
 
       // Decode the remaining Base64 headers and keep required fields in context
       const base64Payload = JSON.stringify(response.data.token).split(".")[1];
-      const userId = JSON.parse(window.atob(base64Payload)).id;
-      console.log("this is userId: ", userId);
+      // console.log("base64Payload is: " , base64Payload);
+      const userId = JSON.parse(window.atob(base64Payload)).userId;
+      // console.log("this is userId: ", userId);
       dispatch(userLoginSuccess(userId));
       navigate("/");
 
@@ -55,48 +57,51 @@ const Register = () => {
       
     } catch (error) {
       // console.log(`error: ${error}`);
+      dispatch(setLoadingFalse());
       setError(error.response.data.error);
       setTimeout(() => {
         setError("");
       }, 5000);
-      dispatch(setLoadingFalse());
+      
     }
   };
 
   return (
-    <div className="register-page__container">
-      <form className="register-page__form" onSubmit={registerHandler}>
-        <h3 className="register-page__title">Register</h3>
+    <div className="register-page__main">
+      <div className="register-page__container">
+        <form className="register-page__form" onSubmit={registerHandler}>
+          <h3 className="register-page__title">Register</h3>
 
-        {error && <span className="error-message">{error}</span>}
+          {error && <span className="error-message">{error}</span>}
 
-        <div className="form-group">
-          <label htmlFor="name">Username:</label>
-          <input type="text" required id="name" placeholder="Enter username here" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </div>
+          <div className="form-group">
+            <label htmlFor="name">Username:</label>
+            <input type="text" required id="name" placeholder="Enter username here" value={username} onChange={(e) => setUsername(e.target.value)} />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input type="email" required id="email" placeholder="Enter email here" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input type="email" required id="email" placeholder="Enter email here" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input type="password" required id="password" placeholder="Enter password here" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input type="password" required id="password" placeholder="Enter password here" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
 
-        <div className="form-group">
-          <label htmlFor="confirmpassword">Password:</label>
-          <input type="password" required id="confirmpassword" placeholder="Confirm password here" value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)} />
-        </div>
+          <div className="form-group">
+            <label htmlFor="confirmpassword">Password:</label>
+            <input type="password" required id="confirmpassword" placeholder="Confirm password here" value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)} />
+          </div>
 
-        <button type="submit" className="btn btn-primary">Register & Login</button>
+          <button type="submit" className="btn btn-primary">Register & Login</button>
 
-        <span className="register-page__subtext">
-          Already have an account?
-          <Link to="/">Login</Link>
-        </span>
-      </form>
+          <span className="register-page__subtext">
+            Already have an account?
+            <Link to="/login">Login</Link>
+          </span>
+        </form>
+      </div>
     </div>
   );
 };

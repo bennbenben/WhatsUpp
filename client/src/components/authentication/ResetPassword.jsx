@@ -1,11 +1,12 @@
 // Import libraries
 import { useState, useContext } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 // Import internal components
 import { Store } from "../../data/Store";
 import { setLoadingTrue, setLoadingFalse } from "../../data/Actions";
+import "./ResetPassword.css"
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -55,34 +56,36 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="resetpassword-page__container">
+    <div className="resetpassword-page__main">
+      <div className="resetpassword-page__container">
 
-      <div className="resetpassword-page__title">
-        <h1>Forgot Password</h1>
+        <div className="resetpassword-page__title">
+          <h1>Forgot Password</h1>
+        </div>
+
+        <form className="resetpassword-page__form" onSubmit={resetPasswordHandler}>
+
+          {error && <span className="error-message">{error}</span>}
+          {success && 
+          <span className="success-message">
+            {success} <Link to="/login">Login</Link>
+            </span>
+          }
+
+          <div className="form-group">
+            <label htmlFor="password">New Password:</label>
+            <input type="password" required id="password" placeholder="Enter new password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmpassword">Confirm New Password:</label>
+            <input type="password" required id="confirmpassword" placeholder="Confirm new password" value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)} />
+          </div>
+
+          <button type="submit" className="btn btn-primary">Reset Password</button>
+
+        </form>
       </div>
-
-      <form className="resetpassword-page__form" onSubmit={resetPasswordHandler}>
-
-        {error && <span className="error-message">{error}</span>}
-        {success && 
-        <span className="success-message">
-          {success} <Link to="/login">Login</Link>
-          </span>
-        }
-
-        <div className="form-group">
-          <label htmlFor="password">New Password:</label>
-          <input type="password" required id="password" placeholder="Enter new password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="confirmpassword">Confirm New Password:</label>
-          <input type="password" required id="confirmpassword" placeholder="Confirm new password" value={confirmpassword} onChange={(e) => setConfirmpassword(e.target.value)} />
-        </div>
-
-        <button type="submit" className="btn btn-primary">Reset Password</button>
-
-      </form>
     </div>
   );
 }

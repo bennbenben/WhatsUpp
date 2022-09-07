@@ -32,7 +32,10 @@ const userSchema = new mongoose.Schema(
     resetPasswordToken: { type: String },
     resetPasswordExpire: { type: Date },
 
-    avatar: { type: String },
+    avatar: {
+      type: String,
+      default: "",
+    },
 
     bio: {
       type: String,

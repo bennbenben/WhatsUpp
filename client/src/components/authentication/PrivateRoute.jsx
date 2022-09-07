@@ -7,9 +7,9 @@ import { Store } from "../../data/Store";
 
 const PrivateRoute = () => {
   const [globalState, dispatch] = useContext(Store);
-  const { currentUser } = globalState;
+  const { currentUser: { userId } } = globalState;
 
-  if (!currentUser) {
+  if (!userId) {
     return <Navigate to="/login" replace />;
   }
 

@@ -36,9 +36,10 @@ const Login = () => {
     // Decode the remaining Base64 headers and keep required fields in context
     const base64Payload = JSON.stringify(response.data.token).split(".")[1];
     // const hdrObjects = window.atob(base64Payload);
-    const userId = JSON.parse(window.atob(base64Payload)).id;
-    console.log("this is userId: ", userId);
-    dispatch(userLoginSuccess(userId));
+    // const userId = JSON.parse(window.atob(base64Payload)).userId;
+    const currentUser = JSON.parse(window.atob(base64Payload));
+    console.log("this is currentUser: ", currentUser);
+    dispatch(userLoginSuccess(currentUser));
     navigate("/");
 
   } catch (error) {

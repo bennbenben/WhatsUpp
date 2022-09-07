@@ -15,7 +15,12 @@ export const setLoadingTrue = () => ({
 
 export const userLoginSuccess = (currentUser) => ({
   type: action_types.USER_LOGIN_SUCCESS,
-  payload: currentUser,
+  payload: {
+    userId: currentUser.userId,
+    email: currentUser.email,
+    avatar: currentUser.avatar,
+    bio: currentUser.bio,
+  },
 });
 
 export const userLogout = () => ({

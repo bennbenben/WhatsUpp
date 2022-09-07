@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { Backdrop, CircularProgress } from "@mui/material";
 
 // Import internal components
-import { Store } from "../../data/Store";
+import { Store } from "../data/Store";
 
 const GlobalLoader = () => {
   const [globalState, dispatch] = useContext(Store);

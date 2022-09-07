@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 // Import internal components
-import { Store } from "../../data/Store";
-import { setLoadingFalse, setLoadingTrue, userLogout } from "../../data/Actions";
+import { Store } from "../data/Store";
+import { setLoadingFalse, setLoadingTrue, userLogout } from "../data/Actions";
 
 const Private = () => {
   const [error, setError] = useState("");

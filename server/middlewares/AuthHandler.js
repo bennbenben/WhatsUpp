@@ -20,7 +20,7 @@ exports.protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // decrypt / verify based on the secret
-    const userDTO = await userModel.findById(decoded.id); // find the user
+    const userDTO = await userModel.findById(decoded.userId); // find the user
 
     // if no user was found => token is invalid
     if (!userDTO) {

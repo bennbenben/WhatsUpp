@@ -15,7 +15,12 @@ export const reducerFunction = (state, action) => {
     case "USER_LOGIN_SUCCESS":
       return {
         ...state,
-        currentUser: action.payload,
+        currentUser: {
+          userId: action.payload.userId,
+          email: action.payload.email,
+          avatar: action.payload.avatar,
+          bio: action.payload.bio,
+        },
         isLoading: false,
       };
 

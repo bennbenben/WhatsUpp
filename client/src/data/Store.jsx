@@ -1,7 +1,12 @@
 import { createContext } from "react";
 
 export const initialState = {
-  currentUser: null,
+  currentUser: {
+    userId: null,
+    email: null,
+    avatar: null,
+    bio: null,
+  },
   isLoading: false,
 };
 

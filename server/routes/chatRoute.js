@@ -9,8 +9,8 @@ const router = express.Router();
 // Routes (router = /api/v1/chat)
 router.route("/").get(protect, chatController.listChatroom); 
 router.route("/").post(protect, chatController.createChatroom); 
-router.route("/:id").get(protect, chatController.showChatroom);
-router.route("/:id/message").get(protect, chatController.listMessage);
-router.route("/:id/message").post(protect, chatController.createMessage);
+// router.route("/:id").get(protect, chatController.showChatroom);
+// router.route("/:id/message").get(protect, chatController.listMessage);
+// router.route("/:id/message").post(protect, chatController.createMessage);
 
-module.exports = app;
+module.exports = router;

@@ -11,11 +11,43 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import "./SidebarLayout.css";
 import SidebarChat from "./SidebarChat";
 import { Store } from "../../data/Store";
+import { setLoadingFalse, setLoadingTrue } from "../../data/Actions";
 
 const SidebarLayout = () => {
   const [globalState, dispatch] = useContext(Store);
   const { currentUser } = globalState;
-  console.log("this is currentUser: ", currentUser)
+  console.log("this is currentUser: ", currentUser);
+  const [chatrooms, setChatrooms] = useState([]);
+
+  useEffect(() => {
+    dispatch(setLoadingTrue());
+
+    // Make API call to fetch chatrooms
+    const fetchChatrooms = async () => {
+      const axiosConfig = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axios.get("http://localhost:4000/api/v1/chat", axiosConfig);
+      console.log(`response.data: ${JSON.stringify(response.data)}`);
+
+      // From API response data, map it into array and set into the chatrooms state
+      setChatrooms(
+        response.data.map((room) => {
+          return {
+            chatroomId: room._id,
+            name: room.chatroom_name,
+            avatar: room.avatar,
+          };
+        })
+      );
+    };
+
+    fetchChatrooms();
+    dispatch(setLoadingFalse());
+  }, []);
+  
 
   return (
     <>

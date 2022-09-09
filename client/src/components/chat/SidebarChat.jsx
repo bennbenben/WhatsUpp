@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./SidebarChat.css";
 import { Avatar } from "@mui/material";
+import AddChatroom from "./AddChatroom";
+
 
 function SidebarChat({ id, name, addNewChat }) {
   // useEffect and useState to generate random string
@@ -39,9 +41,7 @@ function SidebarChat({ id, name, addNewChat }) {
   return !addNewChat ? (
     <Link to={`/rooms/${id}`}>
       <div className="sidebarChat">
-        <Avatar
-          src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`}
-        />
+        <Avatar src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`} />
         <div className="sidebarChat__info">
           <h2>Room name : {name}</h2>
           <p>Last message...</p>
@@ -49,10 +49,8 @@ function SidebarChat({ id, name, addNewChat }) {
       </div>
     </Link>
   ) : (
-    <div onClick={createChat} className="sidebarChat">
-      <h2>Add new Chat</h2>
-    </div>
-  );
-}
+    <AddChatroom />
+  )
+};
 
 export default SidebarChat;

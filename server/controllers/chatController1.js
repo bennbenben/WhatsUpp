@@ -1,9 +1,12 @@
 const chatroomModel = require("../models/chatroomModel");
+const messagesModel = require("../models/messages");
 const ErrorResponse = require("../utils/ErrorResponse");
 
 // Display all open chat rooms in SidebarChat
 exports.listChatroom = async (req, res, next) => {
+  // const { userId, username } = req.body;
   const { userId, username } = req.body;
+  console.log('req.data',req.body)
   let chatrooms = [];
 
   try {
@@ -43,10 +46,42 @@ exports.createChatroom = async (req, res, next) => {
 };
 
 // Open a chatroom and show the chats
-// exports.showChatroom = {};
+exports.showChatroom = async (req, res, next) => {
+  console.log("inside showChatroom");
+  let chatroom = {
+    // _id: ...
+    // chatroom_name: ....
+    // participants: [{userId, username}]
+  };
+
+  try {
+    console.log(`these are the req.params: ${req.params}`);
+    const chatroomId = req.params.chatroomId;
+    chatroom = await chatroomModel.findById(chatroomId);
+    
+  } catch (error) {
+    return next(new ErrorResponse("Failed to fetch chatroom data", 500));
+  }
+
+  return res.status(200).json({ success: true, chatroom: chatroom });
+};
 
 // Lists the messages in a chat
-// exports.listMessage = {};
+exports.listMessage = async (req, res, next) => {
+  console.log("inside listMessage");
+  let messages = []
+        
+  try {
+    console.log(`these are the req.params: ${JSON.stringify(req.params.chatroomId)}`);
+    messages = await messagesModel.find({ chatId : req.params.chatroomId }).exec();
+//       // need to sort messages here by timestamp
+//       // and also install luxon to post currentTimenNow
+  } catch (err) {
+    return next(new ErrorResponse("Failed to fetch list messages", 500));
+  }
+
+  return res.status(200).json({ success: true, messages: messages });
+};
 
 // Creates a message
 // exports.createMessage = {};

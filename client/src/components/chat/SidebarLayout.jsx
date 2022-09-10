@@ -31,33 +31,40 @@ const SidebarLayout = () => {
           Authorization: `Bearer ${localStorage.getItem("authToken")}`,
         },
       };
-      const response = await axios.get("http://localhost:4000/api/v1/chat", axiosConfig);
-      const responseData = JSON.stringify(response.data);
-      console.log(`response.data: ${responseData}`);
 
-      if (responseData.chatrooms) {
-        console.log(`responseData.chatrooms are available\nchatrooms are: ${responseData.chatrooms}`);
+      const data = { "userId": currentUser.userId };
+
+      const response = await axios.post("http://localhost:4000/api/v1/chat/listchatroom", data, axiosConfig);
+      // const responseData = JSON.stringify(response.data.chatrooms);
+      // console.log(`response.data: ${responseData}`);
+
+      if (response.data.chatrooms) {
+        console.log(`responseData.chatrooms are available\nchatrooms are: ${response.data.chatrooms}`);
         // From API response data, map it into array and set into the chatrooms state
-        setChatrooms(
-          responseData.chatrooms.map((room) => {
+        setChatrooms(response.data.chatrooms.map(
+          (room) => {
             return {
-              chatroomId: room._id,
+              id: room._id,
               name: room.chatroom_name,
               avatar: room.avatar,
-            };
-          })
-        );
+            }
+          }
+        ));
+
+        //you are setting the state
+        //later check the state if length = 0 or not
       } else {
-        console.log(`responseData.chatrooms are not available`);
+        console.log("responseData.chatrooms are not available");
       };
     };
+
 
     fetchChatrooms();
     dispatch(setLoadingFalse());
   }, []);
   
-  const displayChatrooms = chatrooms.map((chatroom) => (
-    <SidebarChat key={chatroom.id} id={chatroom.id} name={chatroom.name} />
+  const displayChatrooms = chatrooms.map((room) => (
+    <SidebarChat key={room.id} id={room.id} name={room.name} />
   ));
 
   return (
@@ -71,18 +78,19 @@ const SidebarLayout = () => {
             <IconButton><MoreVertIcon /></IconButton>
           </div>
         </div>
-      </div>
+      
 
-      <div className="sidebar__search">
-        <div className="sidebar__searchContainer">
-          <SearchOutlinedIcon />
-          <input type="text" placeholder="Search or start a new chat" />
+        <div className="sidebar__search">
+          <div className="sidebar__searchContainer">
+            <SearchOutlinedIcon />
+            <input type="text" placeholder="Search or start a new chat" />
+          </div>
         </div>
-      </div>
 
-      <div className="sidebar__chats">
-        <SidebarChat addNewChat />
-        {displayChatrooms}
+        <div className="sidebar__chats">
+          <SidebarChat addNewChat />
+          {displayChatrooms}
+        </div>
       </div>
 
       <Outlet />

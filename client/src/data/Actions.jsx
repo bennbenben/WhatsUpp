@@ -3,6 +3,7 @@ const action_types = {
   SET_LOADING_TRUE: "SET_LOADING_TRUE",
   USER_LOGIN_SUCCESS: "USER_LOGIN_SUCCESS",
   USER_LOGOUT: "USER_LOGOUT",
+  SET_CHATROOM_ID: "SET_CHATROOM_ID",
 };
 
 export const setLoadingFalse = () => ({
@@ -25,4 +26,9 @@ export const userLoginSuccess = (currentUser) => ({
 
 export const userLogout = () => ({
   type: action_types.USER_LOGOUT,
+});
+
+export const setChatroomId = (chatroomId) => ({
+  type: action_types.SET_CHATROOM_ID,
+  payload: { chatroomId: chatroomId },
 });

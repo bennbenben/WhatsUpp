@@ -7,6 +7,7 @@ export const initialState = {
     avatar: null,
     bio: null,
   },
+  chatroomId: null,
   isLoading: false,
 };
 

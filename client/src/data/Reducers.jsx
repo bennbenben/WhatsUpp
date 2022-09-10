@@ -31,6 +31,12 @@ export const reducerFunction = (state, action) => {
         isLoading: false,
       };
 
+    case "SET_CHATROOM_ID":
+      return {
+        ...state,
+        chatroomId: action.payload.chatroomId,
+      };
+
     default:
       return true;
   }

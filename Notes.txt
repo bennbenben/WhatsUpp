@@ -1,15 +1,11 @@
-collection 1
-rooms = {
-    name:
-    _id:
-}
 
-So what i have done
+To Do:
+1. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms) --> continue from here
+2. Integrate socket io
 
-Schema created
-controller with routes created
-router with routes created
-
-now need to see how to call the controller in ReactJS
+Bonus:
+fix login/register css
+styled components
+Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens
 
 Before commit: need change back the local connectionURI

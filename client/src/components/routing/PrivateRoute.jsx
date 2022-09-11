@@ -1,54 +1,49 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Navigate, Outlet } from "react-router-dom";
+// Import libraries
+import { useContext } from "react";
+import { Navigate, Outlet } from "react-router-dom";
+
+// Import internal components
+import { Store } from "../../data/Store";
+import { userLoginSuccess, userLogout } from "../../data/Actions";
+import { useEffect } from "react";
 
 const PrivateRoute = () => {
-  const [auth, setAuth] = useState(localStorage.getItem("authToken"));
+  const [globalState, dispatch] = useContext(Store);
+  const { currentUser: { userId } } = globalState;
 
-  useEffect(() => {
-    if (localStorage.getItem("authToken")) {
-      setAuth(true);
-    }
-  }, []);
+  // assign variables
+  // const authToken = localStorage.getItem("authToken");
+  // if (authToken) {
+  //   const base64Payload = JSON.stringify(authToken).split(".")[1];
+  //   const currentUser = JSON.parse(window.atob(base64Payload));
+  //   const { exp } = currentUser;
+  //   console.log("exp is: ", exp); // 1662879164
+  //   const now = Math.round(Date.now()/1000); 
+  //   console.log('now is: ', now); //1662880021
 
-  console.log("auth is: ", auth);
-
-  // -------------------------------------------------
-
-  // const [auth, setAuth] = useState(false);
-
-  // useEffect(() => {
-  //   console.log(localStorage.getItem("authToken"));
-  //   const auth_token = JSON.parse(JSON.stringify(localStorage.getItem("authToken")));
-  //   if (auth_token) {
-  //    setAuth(true);
+  //   // Case 1 : authToken expired
+  //   if (now > exp ) {
+  //     localStorage.removeItem("authToken");
+  //     // dispatch(userLogout());
+  //     return <Navigate to="/login" replace />;
   //   }
-  // }, []);
+  //   //Case 2: authToken not expired && userId === null (user has refreshed the page)
+  //   if (userId === null ) {
+  //       dispatch(userLoginSuccess(currentUser));
+  //     };
+  //   }
 
-  // const auth = useAuth();
-  // If authorized, return an outlet that will render child elements
-  // If not, return element that will navigate to login page
-  // return auth ? <Navigate to="/hello" /> : <Navigate to="/login" />;
+  // If first time login, - JWT dont exist, context dont exist, navigate them to /login
+  if (!userId) {
+    return <Navigate to="/login" replace />;
+  }
 
-  return auth ? <Outlet /> : <Navigate to="/login" />;
+  return <Outlet />;
 };
 
-export default PrivateRoute;
 
-// import { Navigate, Route } from "react-router-dom";
-
-// const PrivateRoute = ({ component: Component, ...rest }) => {
-//   return (
-//     <Route
-//       {...rest}
-//       render={(props) => {
-//         localStorage.getItem("authToken") ? (
-//           <Component {...props} />
-//         ) : (
-//           <Navigate to="/login" />
-//         );
-//       }}
-//     />
-//   );
+// const PrivateRoute = () => {
+//   return localStorage.getItem("authToken") ? <Outlet /> : <Navigate to="/login" />;
 // };
 
-// export default PrivateRoute;
+export default PrivateRoute;

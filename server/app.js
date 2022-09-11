@@ -19,12 +19,12 @@ if (process.env.NODE_ENV != "production") {
 
 // import routes
 const user = require("./routes/userRoute");
-const private = require("./routes/privateRoute");
-const chatRouter = require('./routes/chatRoutes')
+const chat = require("./routes/chatRoute");
+// const private = require("./routes/privateRoute");
 
 app.use("/api/v1", user);
-app.use("/api/v1/private", private);
-app.use('/api/v2/chats', chatRouter);
+app.use("/api/v1/chat", chat);
+// app.use("/api/v1/private", private);
 
 // Middleware
 app.use(errorHandler);

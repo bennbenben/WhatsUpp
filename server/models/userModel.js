@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema(
 
     bio: {
       type: String,
-      default: "Hello, welcome to my profile! 👋",
+      default: "Hello, welcome to my profile!",
     },
   },
   {
@@ -69,11 +69,11 @@ userSchema.methods.matchPasswords = async function (password) {
 userSchema.methods.getSignedToken = function () {
   return jwt.sign(
     {
-      id: this._id,
-      name: this.username,
+      userId: this._id,
+      username: this.username,
       email: this.email,
-      bio: this.bio,
       avatar: this.avatar,
+      bio: this.bio,
     },
     process.env.JWT_SECRET,
     {

@@ -18,6 +18,7 @@ export const userLoginSuccess = (currentUser) => ({
   type: action_types.USER_LOGIN_SUCCESS,
   payload: {
     userId: currentUser.userId,
+    username: currentUser.username,
     email: currentUser.email,
     avatar: currentUser.avatar,
     bio: currentUser.bio,

@@ -1,11 +1,11 @@
+
 To Do:
+1. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms) --> continue from here
+2. Integrate socket io
 
-1. [bugfix] Register need to fix -- OK
-2. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms)
-3. [FE+BE] Send Message function -- OK
-4. Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens
-
-
-Integrate socket io
+Bonus:
 fix login/register css
+styled components
+Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens
+
 Before commit: need change back the local connectionURI

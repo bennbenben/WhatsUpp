@@ -34,20 +34,17 @@ const Login = () => {
     localStorage.setItem("authToken", response.data.token);
 
     // Decode the remaining Base64 headers and keep required fields in context
-    const base64Payload = JSON.stringify(response.data.token).split(".")[1];
-    // const hdrObjects = window.atob(base64Payload);
-    // const userId = JSON.parse(window.atob(base64Payload)).userId;
+    const base64Payload = JSON.stringify(response.data.token).split(".")[1].split("-")[0];
     const currentUser = JSON.parse(window.atob(base64Payload));
-    console.log("this is currentUser: ", currentUser);
     dispatch(userLoginSuccess(currentUser));
     navigate("/");
 
   } catch (error) {
+    dispatch(setLoadingFalse());
     setError(error.response.data.error);
     setTimeout(() => {
       setError("");
-    }, 5000);
-    dispatch(setLoadingFalse());
+      }, 5000);
     };
   };
   

@@ -1,15 +1,11 @@
-collection 1
-rooms = {
-    name:
-    _id:
-}
+To Do:
 
-So what i have done
+1. [bugfix] Register need to fix
+2. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms)
+3. [FE+BE] Send Message function
+4. Unprotected routes - register/pw change(?)
 
-Schema created
-controller with routes created
-router with routes created
 
-now need to see how to call the controller in ReactJS
-
+Integrate socket io
+fix login/register css
 Before commit: need change back the local connectionURI

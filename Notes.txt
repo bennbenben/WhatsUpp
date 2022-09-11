@@ -1,9 +1,9 @@
 To Do:
 
-1. [bugfix] Register need to fix
+1. [bugfix] Register need to fix -- OK
 2. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms)
-3. [FE+BE] Send Message function
-4. Unprotected routes - register/pw change(?)
+3. [FE+BE] Send Message function -- OK
+4. Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens
 
 
 Integrate socket io

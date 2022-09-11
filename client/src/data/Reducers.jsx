@@ -17,6 +17,7 @@ export const reducerFunction = (state, action) => {
         ...state,
         currentUser: {
           userId: action.payload.userId,
+          username: action.payload.username,
           email: action.payload.email,
           avatar: action.payload.avatar,
           bio: action.payload.bio,

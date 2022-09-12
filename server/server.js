@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 connectDB();
 
 app.get("/hello-world/test-api", (req, res) => {
-  res.send("hello world")
+  res.send("hello world");
 });
 
 const server = app.listen(port, () => {
@@ -35,10 +35,11 @@ connection.once("open", () => {
   const messageChangeStream = connection.collection("messages").watch();
 
   messageChangeStream.on("change", (change) => {
+    console.log("changestream registered a change: ", change);
     switch (change.operationType) {
       case "insert":
         console.log("### inside messageChangeStream: insert case");
         break;
     }
-  })
-})
+  });
+});

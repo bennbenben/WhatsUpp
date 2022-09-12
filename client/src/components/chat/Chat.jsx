@@ -52,6 +52,9 @@ const Chat = ({ chatroomId }) => {
 
     fetchShowChatRoom();
     fetchListMessages();
+
+    // insert socket code here (when chatroomId runs, and after the messages are being loaded and displayed,
+    // mount the socket)
     
   }, [chatroomId]);
 

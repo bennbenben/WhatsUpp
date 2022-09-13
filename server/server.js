@@ -38,6 +38,7 @@ connection.once("open", () => {
     console.log("changestream registered a change: ", change);
     switch (change.operationType) {
       case "insert":
+        // emit an event to the FE (pass in the change variable)
         console.log("### inside messageChangeStream: insert case");
         break;
     }

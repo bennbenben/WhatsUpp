@@ -3,9 +3,8 @@ import { Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Avatar, IconButton } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat";
-import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 // Import internal components
@@ -13,12 +12,14 @@ import "./SidebarLayout.css";
 import SidebarChat from "./SidebarChat";
 import { Store } from "../../data/Store";
 import { setLoadingFalse, setLoadingTrue } from "../../data/Actions";
+import AddChatroom from "./AddChatroom";
 
 const SidebarLayout = () => {
   const [globalState, dispatch] = useContext(Store);
   const { currentUser } = globalState;
   console.log("this is currentUser: ", currentUser);
   const [chatrooms, setChatrooms] = useState([]);
+
 
   useEffect(() => {
     dispatch(setLoadingTrue());
@@ -58,7 +59,6 @@ const SidebarLayout = () => {
       };
     };
 
-
     fetchChatrooms();
     dispatch(setLoadingFalse());
   }, []);
@@ -74,7 +74,7 @@ const SidebarLayout = () => {
           <Avatar src={currentUser ? currentUser.avatar : null } />
           <div className="sidebar__headerRight">
             <IconButton><DonutLargeIcon /></IconButton>
-            <IconButton><ChatIcon /></IconButton>
+            <AddChatroom />
             <IconButton><MoreVertIcon /></IconButton>
           </div>
         </div>
@@ -88,7 +88,6 @@ const SidebarLayout = () => {
         </div>
 
         <div className="sidebar__chats">
-          <SidebarChat addNewChat />
           {displayChatrooms}
         </div>
       </div>

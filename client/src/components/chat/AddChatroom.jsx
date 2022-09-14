@@ -1,110 +1,194 @@
 // Import libraries
-import { useState } from "react";
-// Imports for Modal
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import CloseIcon from '@mui/icons-material/Close';
-import Slide from '@mui/material/Slide';
-// Imports for Checkbox
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { IconButton } from "@mui/material";
+import ChatIcon from "@mui/icons-material/Chat";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+// Import libraries for SideDrawer
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import Input from "@mui/material/Input";
+
+// Import libraries for Checkbox
+import * as React from "react";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+
+// Import internal components
 
 const AddChatroom = () => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [chat, setChat] = useState({name: "hello world"});
+  // For SideDrawer - adding chats
+  const [displayUsers, setDisplayUsers] = useState([]);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [chatName, setChatName] = useState("");
+  const [state, setState] = useState({
+    left: false,
+  });
 
-  
-  // ToDo:
-  // useEffect() API call - Fetch all available users
-  // Render availalbe users into Checkbox
-  // (optional - searrchbar)
-  // Grab input from Checkbox
-  // Post request with input
-  // submit -> submit to the BE. BE does a query to check if "# current participants == 1. if it's 1, then check if 
-  // there is an existing chat between this 2 persons" -> return the chatroom ID --> FE navigate to rooms/:roomId
-  // #currentpartipants>1 && groupname does not exist, then create a new record in chatrooms collections
+  // useEffectAPI call - Fetch all available users
+  useEffect(() => {
+    const listAvailableUsers = async () => {
+      const axiosConfig = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+        },
+      };
+      const response = await axios.get(
+        `http://localhost:4000/api/v1/chat/listUsers`,
+        axiosConfig
+      );
+      console.log("listAvailableUsers response is: ", response.data.usersList);
+      response.data.usersList.map((userObject) => {
+        setDisplayUsers((prevList) => {
+          return [
+            ...prevList,
+            { userId: userObject._id, username: userObject.username },
+          ];
+        });
+      });
+    };
+    listAvailableUsers();
+  }, []);
 
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
 
-  const handleClickOpen = () => {
-    setOpenDialog(true);
+    setState({ ...state, [anchor]: open });
+
+    if (open == false) {
+      setSelectedUsers((prevState) => {
+        return [];
+      });
+    }
   };
 
-  const handleClose = () => {
-    setOpenDialog(false);
-  };
+  const handleChecked = (e) => {
+    // console.log('e.target.value', e.target.value)
+    // console.log('e.target.checked', e.target.checked)
+    
+    // if user is checked
+    if (e.target.checked) {
+      console.log(`add ${e.target.value} to selectedList`)
+      setSelectedUsers(prevList => {
+        const userIndex = displayUsers.findIndex( object => object.username == e.target.value);
+        console.log(`userIndex: ${userIndex}`);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(e.target.value);
-    setOpenDialog(false);
+        const userId = displayUsers[userIndex].userId
+        console.log(`userId: ${userId}`);
+
+
+        return [...prevList, {"userId": userId,"username": e.target.value}]
+      })
+    }
+    
+    // if user is unchecked
+    if (!e.target.checked) {
+      setSelectedUsers(prevList => {
+        const deleteIndex = prevList.findIndex( object => object.username == e.target.value)
+        console.log('Delete person index: ',deleteIndex)
+        return prevList.filter( (person, index) => index !==deleteIndex )
+      })
+    }
   }
 
-  return !openDialog ? (
-    <div onClick={handleClickOpen} className="sidebarChat">
-      <h2>Add new Chat</h2>
-    </div>
-  ) : (
-    <Dialog
-        fullScreen
-        open={openDialog}
-        onClose={handleClose}
-        TransitionComponent={Transition}
+  const handleCreateChat = async () => {
+    // Close drawer
+    // Todo: Troubleshoot - why is SideDrawer not closing? stat is not updating
+    toggleDrawer('left', false)
+
+    console.log('create chat request sent!')
+
+    // Post request - to create Chat
+    const axiosConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+    };
+
+    const chatData = {
+      "chatroom_name": chatName,
+      "participants": selectedUsers
+    };
+    
+    const response = await axios.post(`http://localhost:4000/api/v1/chat/`, chatData, axiosConfig);
+    console.log("response is: ", response);
+    
+    // setInput("");
+  }
+
+  const list = () => (
+    <Box
+      sx={{ width: 270 }}
+      role="presentation"
+      // onClick={toggleDrawer('left', false)}
+      // onKeyDown={toggleDrawer('left', false)}
+    >
+      <div>Selected Users: </div>
+      {selectedUsers.map((user) => (
+        <div key={user.username}>{user.username}</div>
+      ))}
+      <input
+        placeholder="Enter group chat name"
+        onChange={(event) => setChatName(event.target.value)}
+      />
+      <Button
+        color="inherit"
+        onClick={handleCreateChat}
+        onKeyDown={toggleDrawer("left", false)}
       >
-        <AppBar sx={{ position: 'relative' }}>
-
-          <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
-              <CloseIcon />
-            </IconButton>
-            
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              {/* Title of the modal */}
-              Sound
-            </Typography>
-            {/* Button to submit POST request to addNewChat */}
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
-            
-          </Toolbar>
-
-        </AppBar>
-
-        
-        <List>
-          {/* Convert these child elements to checkbox */}
-          <FormGroup>
-            <FormControlLabel control={<Checkbox defaultChecked />} label="Person1" />
-            <FormControlLabel disabled control={<Checkbox />} label="Person2" />
-          </FormGroup>
-
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
+        Create Chat
+      </Button>
+      <Divider />
+      <List>
+        {displayUsers.map((text, index) => (
+          <ListItem key={text.username} disablePadding>
+            <ListItemButton>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Checkbox />}
+                  label={text.username}
+                  value={text.username}
+                  onChange={handleChecked}
+                />
+              </FormGroup>
+            </ListItemButton>
           </ListItem>
-          
-          <Divider />
+        ))}
+      </List>
+      <Divider />
+    </Box>
+  );
 
-          <ListItem button>
-            <ListItemText primary="Default notification ringtone" secondary="Tethys" />
-          </ListItem>
+  // Todo: Search bar
 
-        </List>
-
-      </Dialog>
+  return (
+    <>
+      <IconButton onClick={toggleDrawer("left", true)}>
+        <ChatIcon />
+      </IconButton>
+      <React.Fragment key={"left"}>
+        <Drawer
+          anchor={"left"}
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
+        >
+          {list("left")}
+        </Drawer>
+      </React.Fragment>
+    </>
   );
 };
 

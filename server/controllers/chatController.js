@@ -1,6 +1,7 @@
 const chatroomModel = require("../models/chatroomModel");
 const messagesModel = require("../models/messagesModel");
 const ErrorResponse = require("../utils/ErrorResponse");
+const userModel = require("../models/userModel")
 
 // Display all open chat rooms in SidebarChat
 exports.listChatroom = async (req, res, next) => {
@@ -31,12 +32,17 @@ exports.listChatroom = async (req, res, next) => {
 // Create a chatroom
 exports.createChatroom = async (req, res, next) => {
   console.log(req.body);
+  //body is going to receive 2 things
+  //1. participants - array of names
+  //2. chatroom name - string
   
   try {
-    const chatroomDTO = chatroomModel.create({
+    const chatroomDTO = await chatroomModel.create({
       chatroom_name: req.body.chatroom_name,
       participants: req.body.participants,
     });
+
+    console.log(`chatroomDTO: ${chatroomDTO}`);
 
     res.status(201).json({ success: true, chatroomId: chatroomDTO._id });
 
@@ -96,3 +102,23 @@ exports.createMessage = async (req, res, next) => {
 
   return res.status(201).json({ success: true, message: message });
 }
+
+// List all users from DB
+exports.listUsers = async (req, res, next) => {
+  // const { userId, username } = req.body;
+  console.log("insude listUsers");
+  let usersList = [];
+
+  try {
+    usersList = await userModel.find({}).exec();
+
+    if (!usersList) {
+      next(new ErrorResponse("No active users found", 404));
+    }
+
+    return res.status(200).json({ success: true, usersList: usersList });
+
+  } catch (error) {
+    return next(new ErrorResponse("Failed to show usersList", 500));
+  };
+};

@@ -5,6 +5,8 @@ import { Avatar, IconButton } from "@mui/material";
 import { AttachFile, MoreVert, SearchOutlined } from "@mui/icons-material";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import MicIcon from "@mui/icons-material/Mic";
+import io from "socket.io-client";
+
 // Import internal components
 import { Store } from "../../data/Store";
 
@@ -50,7 +52,27 @@ const Chat = ({ chatroomId }) => {
 
     fetchShowChatRoom();
     fetchListMessages();
+
+    // insert socket code here (when chatroomId runs, and after the messages are being loaded and displayed,
+    // mount the socket)
+
+    
+    
   }, [chatroomId]);
+
+  useEffect(() => {
+    const mountComponentAsync = async () => {
+      const socket = io("http://localhost:4000/api/socket");
+      socket.on("newMessage", (messageObject) => {
+        console.log(`this is messageObject: ${JSON.stringify(messageObject)}`);
+        setMessages([...messages, messageObject]);
+        // console.log("closing socket..");
+        // socket.close();
+      });
+    };
+
+    mountComponentAsync();
+  },[messages]);
 
   useEffect(() => {
     setSeedString(Math.floor(Math.random() * 5000));

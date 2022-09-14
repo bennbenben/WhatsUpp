@@ -22,11 +22,7 @@ const SidebarChat = ({ id, name, addNewChat }) => {
     setSeedString(Math.floor(Math.random() * 5000));
   }, []);
 
-  return !addNewChat ? (
-    // Change this link to, to dispatchFn(setroomId)
-    // when we click room -> it links to the Chat URL
-    // now, boolean to render the <Chat component>
-    // <Link to={`/rooms/${id}`}> 
+  return (
       <div onClick={handleChatroomId} className="sidebarChat">
         <Avatar src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`} />
         <div className="sidebarChat__info">
@@ -35,9 +31,7 @@ const SidebarChat = ({ id, name, addNewChat }) => {
         </div>
       </div>
     // </Link>
-  ) : (
-    <AddChatroom />
-  )
+  );
 };
 
 export default SidebarChat;

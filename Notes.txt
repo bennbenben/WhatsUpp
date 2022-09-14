@@ -1,7 +1,10 @@
 
 To Do:
-1. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms) --> continue from here
+1. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms) --> continue from here - OK
+1.1. Need to bugfix - why cannot close drawer + createbar
 2. Integrate socket io
+3. Logout in the 3 dots button
+4. Refresh token
 
 Bonus:
 fix login/register css

@@ -55,8 +55,24 @@ const Chat = ({ chatroomId }) => {
 
     // insert socket code here (when chatroomId runs, and after the messages are being loaded and displayed,
     // mount the socket)
+
+    
     
   }, [chatroomId]);
+
+  useEffect(() => {
+    const mountComponentAsync = async () => {
+      const socket = io("http://localhost:4000/api/socket");
+      socket.on("newMessage", (messageObject) => {
+        console.log(`this is messageObject: ${JSON.stringify(messageObject)}`);
+        setMessages([...messages, messageObject]);
+        // console.log("closing socket..");
+        // socket.close();
+      });
+    };
+
+    mountComponentAsync();
+  },[messages]);
 
   useEffect(() => {
     setSeedString(Math.floor(Math.random() * 5000));

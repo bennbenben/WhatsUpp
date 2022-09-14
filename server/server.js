@@ -15,7 +15,11 @@ const server = app.listen(port, () => {
 });
 
 // sockets
-const io = require("socket.io")(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "http://localhost:3000",
+  }
+});
 
 io.of("/api/socket").on("connection", (socket) => {
   console.log("socket.io: user connected: ", socket.id);
@@ -40,6 +44,14 @@ connection.once("open", () => {
       case "insert":
         // emit an event to the FE (pass in the change variable)
         console.log("### inside messageChangeStream: insert case");
+        const messageObject = {
+          chatId: change.fullDocument.chatId,
+          name: change.fullDocument.name,
+          message: change.fullDocument.message,
+          timestamp: change.fullDocument.timestamp,
+          _id: change.fullDocument._id,
+        };
+        io.of("/api/socket").emit("newMessage", messageObject);
         break;
     }
   });

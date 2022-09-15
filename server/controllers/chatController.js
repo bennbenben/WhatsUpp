@@ -1,7 +1,8 @@
 const chatroomModel = require("../models/chatroomModel");
 const messagesModel = require("../models/messagesModel");
 const ErrorResponse = require("../utils/ErrorResponse");
-const userModel = require("../models/userModel")
+const userModel = require("../models/userModel");
+const uniqueArray = require("../utils/Common");
 
 // Display all open chat rooms in SidebarChat
 exports.listChatroom = async (req, res, next) => {
@@ -96,12 +97,23 @@ exports.createMessage = async (req, res, next) => {
 
   try {
     await messagesModel.create(message);
+    const chatroomDTO = await chatroomModel.findById(message.chatId);
+    const participants = chatroomDTO.participants.map(
+      (user) => ({
+        "userId": user.userId,
+        "username": user.username,
+      })
+    );
+    
+    const uniqueParticipants = uniqueArray(participants, "userId");
+    // console.log("uniqueParticipants: ", uniqueParticipants);
+
+    return res.status(201).json({ success: true, message: message, participants: uniqueParticipants });
+
   } catch (error) {
     return next(new ErrorResponse("Failed to send message", 500));
   };
-
-  return res.status(201).json({ success: true, message: message });
-}
+};
 
 // List all users from DB
 exports.listUsers = async (req, res, next) => {

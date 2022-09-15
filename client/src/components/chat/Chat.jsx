@@ -58,6 +58,7 @@ const Chat = ({ chatroomId }) => {
         console.log("fetchListMessages response is: ", response);
         setMessages(response.data.messages);
       }
+      socket.emit("join chat", chatroomId);
     };
 
     mountComponentAsync();

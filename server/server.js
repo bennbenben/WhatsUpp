@@ -36,9 +36,9 @@ io.of("/api/socket").on("connection", (socket) => {
     console.log("User joined room: ", chatroomId);
   });
 
-  socket.on("new message", (newMessageReceived) => {
-    let 
-  });
+  // socket.on("new message", (newMessageReceived) => {
+  //   let 
+  // });
 
   socket.on("disconnect", () => {
     console.log("socket.io: User disconnected: ", socket.id);

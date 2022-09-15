@@ -31,7 +31,7 @@ exports.listChatroom = async (req, res, next) => {
 
 // Create a chatroom
 exports.createChatroom = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   //body is going to receive 2 things
   //1. participants - array of names
   //2. chatroom name - string
@@ -42,7 +42,7 @@ exports.createChatroom = async (req, res, next) => {
       participants: req.body.participants,
     });
 
-    console.log(`chatroomDTO: ${chatroomDTO}`);
+    // console.log(`chatroomDTO: ${chatroomDTO}`);
 
     res.status(201).json({ success: true, chatroomId: chatroomDTO._id });
 
@@ -61,7 +61,7 @@ exports.showChatroom = async (req, res, next) => {
   };
 
   try {
-    console.log(`these are the req.params: ${req.params}`);
+    // console.log(`these are the req.params: ${req.params}`);
     const chatroomId = req.params.chatroomId;
     chatroom = await chatroomModel.findById(chatroomId);
     
@@ -78,7 +78,7 @@ exports.listMessage = async (req, res, next) => {
   let messages = []
         
   try {
-    console.log(`these are the req.params: ${JSON.stringify(req.params.chatroomId)}`);
+    // console.log(`these are the req.params: ${JSON.stringify(req.params.chatroomId)}`);
     messages = await messagesModel.find({ chatId : req.params.chatroomId }).exec();
 //       // need to sort messages here by timestamp
 //       // and also install luxon to post currentTimenNow

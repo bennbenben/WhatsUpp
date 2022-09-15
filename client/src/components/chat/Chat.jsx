@@ -18,10 +18,19 @@ const Chat = ({ chatroomId }) => {
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
   const [globalState, dispatch] = useContext(Store);
-
+  const [socketConnected, setSocketConnected] = useState(false);
   const { currentUser } = globalState;
+  let socket;
 
   useEffect(() => {
+    // mounting sockets and socket states
+    const mountComponentAsync = async () => {
+      socket = io("http://localhost:4000/api/socket");
+      socket.emit("setup", currentUser.userId);
+      socket.on("connection", () => setSocketConnected(true));
+    }; 
+
+    // fetch chatroom details: the chatroom_name
     const fetchShowChatRoom = async () => {
       if (chatroomId) {
         const axiosConfig = {
@@ -36,6 +45,7 @@ const Chat = ({ chatroomId }) => {
       }
     };
 
+    // fetch the messages
     const fetchListMessages = async () => {
       if (chatroomId) {
         const axiosConfig = {
@@ -50,29 +60,11 @@ const Chat = ({ chatroomId }) => {
       }
     };
 
+    mountComponentAsync();
     fetchShowChatRoom();
     fetchListMessages();
 
-    // insert socket code here (when chatroomId runs, and after the messages are being loaded and displayed,
-    // mount the socket)
-
-    
-    
   }, [chatroomId]);
-
-  useEffect(() => {
-    const mountComponentAsync = async () => {
-      const socket = io("http://localhost:4000/api/socket");
-      socket.on("newMessage", (messageObject) => {
-        console.log(`this is messageObject: ${JSON.stringify(messageObject)}`);
-        setMessages([...messages, messageObject]);
-        // console.log("closing socket..");
-        // socket.close();
-      });
-    };
-
-    mountComponentAsync();
-  },[messages]);
 
   useEffect(() => {
     setSeedString(Math.floor(Math.random() * 5000));
@@ -91,7 +83,7 @@ const Chat = ({ chatroomId }) => {
 
     const messageData = {
       "chatId": chatroomId,
-      "name": currentUser.username,
+      "sender": currentUser.username,
       "message": input,
     };
     
@@ -102,8 +94,8 @@ const Chat = ({ chatroomId }) => {
   };
 
   const displayMessages = messages?.map((message) => (
-    <p key={message._id} className={`chat__message ${message.name == currentUser.username && "chat__receiver"}`}>
-      <span className="chat__name">{message.name}</span>
+    <p key={message._id} className={`chat__message ${message.sender == currentUser.username && "chat__receiver"}`}>
+      <span className="chat__name">{message.sender}</span>
       {message.message}
       <span className="chat__timestamp">{message.timestamp}</span>
     </p>

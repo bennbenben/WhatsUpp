@@ -1,5 +1,6 @@
 // Import libraries
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
 // Import internal components
 import SidebarLayout from "./SidebarLayout";
 import Chat from "./Chat";
@@ -9,14 +10,25 @@ import Private from "../../common/Private";
 const WhatsUpp = () => {
   const [globalState, dispatch] = useContext(Store);
   const { chatroomId } = globalState;
-  console.log("chatroomId is: ", chatroomId);
+  const { currentUser } = globalState;
+  const [currentSocket, setCurrentSocket] = useState(false);
 
-  console.log("chatroom boolean", chatroomId === true);
+  useEffect(() => {
+    let socket = io("http://localhost:4000/api/socket");
+    
+    socket.emit("setup", currentUser.userId);
+    socket.on("connected", () => {
+      console.log("connected event is received");
+    });
+
+    setCurrentSocket(socket);
+    return () => { socket.disconnect(true) }
+  }, [])
 
   return (
     <>
       <SidebarLayout />
-      {chatroomId && <Chat chatroomId={chatroomId}/>}
+      {chatroomId && <Chat chatroomId={chatroomId} currentSocket={currentSocket} />}
       {/* <Private /> */}
     </>
   );

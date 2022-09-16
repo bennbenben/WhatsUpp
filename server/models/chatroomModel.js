@@ -6,7 +6,6 @@ const chatroomSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please enter chatroom name"],
     },
-
     participants: [
       {
         userId: {
@@ -19,7 +18,6 @@ const chatroomSchema = new mongoose.Schema(
         },
       },
     ],
-
     avatar: { type: String },
   },
   {

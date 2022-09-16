@@ -96,7 +96,8 @@ exports.createMessage = async (req, res, next) => {
   const message = req.body;
 
   try {
-    await messagesModel.create(message);
+    const createdMessage = await messagesModel.create(message);
+    console.log(`createdMessage is: ${createdMessage}`);
     const chatroomDTO = await chatroomModel.findById(message.chatId);
     const participants = chatroomDTO.participants.map(
       (user) => ({
@@ -108,7 +109,7 @@ exports.createMessage = async (req, res, next) => {
     const uniqueParticipants = uniqueArray(participants, "userId");
     // console.log("uniqueParticipants: ", uniqueParticipants);
 
-    return res.status(201).json({ success: true, message: message, participants: uniqueParticipants });
+    return res.status(201).json({ success: true, message: createdMessage, participants: uniqueParticipants });
 
   } catch (error) {
     return next(new ErrorResponse("Failed to send message", 500));

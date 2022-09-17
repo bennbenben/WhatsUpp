@@ -1,11 +1,13 @@
 
-To Do:
-1. Style Modal for addnewchat
-1.1. Need to bugfix - why cannot close drawer + createbar
-******************1.2. Fix user need relogin after refresh******************
-****************2. Integrate socket io -> for latestMessage / sidebarchat****************
+To Do (in priority):
+1. Integrate socket io -> for latestMessage / sidebarchat. Remaining action is happening inside SidebarLayout.jsx
+2. User needs to re-login after refresh
+  >>> am half-considering creating a custom useAuth() hook to put inside the <PrivateRoute />
 3. Logout in the 3 dots button
-4. Read/unread status
+  >>> dispatch() already has a logout action configured, just need the dropdown menu + button
+4. Bugfix/why cannot close drawer + createbar
+5. Style modal for addNewChat
+6. Read/unread status
 
 Bonus:
 4. Refresh token

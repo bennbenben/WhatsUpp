@@ -64,6 +64,20 @@ const SidebarLayout = ({ currentSocket }) => {
       };
     };
 
+    // real-time update chatrooms
+    currentSocket.on("update latest message", (newMessageReceived) => {
+      const chatroomId = newMessageReceived.chatId;
+      chatrooms.forEach((chatroomObject) => {
+        if (chatroomObject.id == chatroomId) {
+          chatroomObject.latestMessage = newMessageReceived.message;
+        }
+        // ====> it is here. that he knew. that the array needed to be python-pop() and shifted to the front.
+        // Option #1: enhance the latestMessage key in chatroom => include timestamp
+        // Option #2: use leetcode method => traditional for() loop. if meet the condition, splice (python pop), and then unshift (adds to the left)
+        // Option #3: use leetcode method => traditional for() loop / use map() to create and return a new array. #2 vs #3: consider O(space-time)
+      });
+    });
+
     fetchChatrooms();
     dispatch(setLoadingFalse());
   }, []);

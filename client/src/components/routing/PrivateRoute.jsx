@@ -12,7 +12,7 @@ const PrivateRoute = () => {
   const { currentUser: { userId } } = globalState;
 
   // assign variables
-  // const authToken = localStorage.getItem("authToken");
+  
   // if (authToken) {
   //   const base64Payload = JSON.stringify(authToken).split(".")[1];
   //   const currentUser = JSON.parse(window.atob(base64Payload));

@@ -5,11 +5,9 @@ import { Avatar, IconButton } from "@mui/material";
 import { AttachFile, MoreVert, SearchOutlined } from "@mui/icons-material";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import MicIcon from "@mui/icons-material/Mic";
-import io from "socket.io-client";
 
 // Import internal components
 import { Store } from "../../data/Store";
-// import socket from "../../common/SocketIoInstance";
 
 import "./Chat.css";
 

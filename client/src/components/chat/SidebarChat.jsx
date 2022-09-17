@@ -8,7 +8,7 @@ import AddChatroom from "./AddChatroom";
 import { Store } from "../../data/Store";
 import { setChatroomId } from "../../data/Actions";
 
-const SidebarChat = ({ id, name }) => {
+const SidebarChat = ({ id, name, lastMessage }) => {
   const [globalState, dispatch] = useContext(Store);
   const [seedString, setSeedString] = useState("");
 
@@ -26,8 +26,8 @@ const SidebarChat = ({ id, name }) => {
       <div onClick={handleChatroomId} className="sidebarChat">
         <Avatar src={`https://avatars.dicebear.com/api/personas/${seedString}.svg`} />
         <div className="sidebarChat__info">
-          <h2>Room name : {name}</h2>
-          <p>Last message...</p>
+          <h2>{name}</h2>
+          <p>{lastMessage || "Click to start chatting"}</p>
         </div>
       </div>
     // </Link>

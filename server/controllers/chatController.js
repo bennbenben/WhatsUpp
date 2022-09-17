@@ -6,9 +6,8 @@ const uniqueArray = require("../utils/Common");
 
 // Display all open chat rooms in SidebarChat
 exports.listChatroom = async (req, res, next) => {
-  // const { userId, username } = req.body;
   const { userId, username } = req.body;
-  console.log('req.data',req.body)
+  // console.log('req.data',req.body)
   let chatrooms = [];
 
   try {
@@ -23,9 +22,25 @@ exports.listChatroom = async (req, res, next) => {
       next(new ErrorResponse("No active chatrooms found", 404));
     }
 
-    return res.status(200).json({ success: true, chatrooms: chatrooms });
+    // create array of promises first
+    let promisesArray = chatrooms.map(async (room) => {
+      const lastMsg = await messagesModel.find({"chatId": room._id})
+      .sort({"timestamp": "desc"})
+      .limit(1);
+
+      return {
+        "chatroomId": lastMsg[0].chatId,
+        "lastMsg": lastMsg[0].message,
+      }
+    })
+
+    const latestMessage = await Promise.all(promisesArray);
+    // console.log(`latestMessage is: ${JSON.stringify(latestMessage)}`);
+
+    return res.status(200).json({ success: true, chatrooms: chatrooms, latestMessage: latestMessage });
 
   } catch (error) {
+    console.log("err is: ", error);
     return next(new ErrorResponse("Failed to show chatrooms", 500));
   };
 };

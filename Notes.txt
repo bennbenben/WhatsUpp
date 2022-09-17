@@ -1,12 +1,14 @@
 
 To Do:
-1. [FE+BE] Add new chat function - with modal (consider: checkboxes with forms) --> continue from here - OK
+1. Style Modal for addnewchat
 1.1. Need to bugfix - why cannot close drawer + createbar
-2. Integrate socket io
+******************1.2. Fix user need relogin after refresh******************
+****************2. Integrate socket io -> for latestMessage / sidebarchat****************
 3. Logout in the 3 dots button
-4. Refresh token
+4. Read/unread status
 
 Bonus:
+4. Refresh token
 fix login/register css
 styled components
 Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens

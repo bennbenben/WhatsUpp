@@ -50,6 +50,10 @@ io.of("/api/socket").on("connection", (socket) => {
     }
 
     socket.to(message.chatId).emit("message received", message);
+    
+    participants.forEach((userObject) => {
+      socket.to(userObject.userId).emit("update latest message", message);
+    });
   });
 
   socket.on("disconnect", () => {

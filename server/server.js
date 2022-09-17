@@ -39,22 +39,17 @@ io.of("/api/socket").on("connection", (socket) => {
   socket.on("leave chat", (chatroomId) => {
     socket.leave(chatroomId);
     console.log("User left room: ", chatroomId);
-  })
+  });
 
   socket.on("new message", (newMessageReceived) => {
     const { message, participants } = newMessageReceived;
+    console.log("new message received. this is list of participants: ", participants);
 
     if (!participants) {
       return console.log("participants not defined");
     }
 
-    participants.forEach((userObject) => {
-      if (userObject.userId == message.sender.userId) {
-        return;
-      };
-      socket.to(message.chatId).emit("message received", message);
-    });
-
+    socket.to(message.chatId).emit("message received", message);
   });
 
   socket.on("disconnect", () => {

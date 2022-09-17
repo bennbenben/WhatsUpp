@@ -9,8 +9,7 @@ import Private from "../../common/Private";
 
 const WhatsUpp = () => {
   const [globalState, dispatch] = useContext(Store);
-  const { chatroomId } = globalState;
-  const { currentUser } = globalState;
+  const { currentUser, chatroomId } = globalState;
   const [currentSocket, setCurrentSocket] = useState(false);
 
   useEffect(() => {
@@ -27,7 +26,7 @@ const WhatsUpp = () => {
 
   return (
     <>
-      <SidebarLayout />
+      <SidebarLayout currentSocket={currentSocket} />
       {chatroomId && <Chat chatroomId={chatroomId} currentSocket={currentSocket} />}
       {/* <Private /> */}
     </>

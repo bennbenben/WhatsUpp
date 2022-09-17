@@ -57,10 +57,10 @@ const Chat = ({ chatroomId, currentSocket }) => {
 
     fetchShowChatRoom();
     fetchListMessages();
-    // trythisfunction();
 
     return () => {
       currentSocket.emit("leave chat", chatroomId);
+      console.log(`chatroomId: ${chatroomId}`);
     }
 
   }, [chatroomId]);
@@ -70,11 +70,13 @@ const Chat = ({ chatroomId, currentSocket }) => {
     currentSocket.on("message received", (newMessageReceived) => {
       console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
       console.log(`messages before setMessages: ${JSON.stringify(messages)}`);
-      setMessages([...messages, newMessageReceived]);
+      setMessages(prevMsgs => {
+        return [...prevMsgs, newMessageReceived]
+      });
       console.log(`messages after setMessages: ${JSON.stringify(messages)}`);
     });
 
-  });
+  }, []);
 
   const sendMessageHandler = async (e) => {
     e.preventDefault();

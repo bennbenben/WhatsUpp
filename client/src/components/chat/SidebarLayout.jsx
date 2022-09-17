@@ -14,7 +14,7 @@ import { Store } from "../../data/Store";
 import { setLoadingFalse, setLoadingTrue } from "../../data/Actions";
 import AddChatroom from "./AddChatroom";
 
-const SidebarLayout = () => {
+const SidebarLayout = ({ currentSocket }) => {
   const [globalState, dispatch] = useContext(Store);
   const { currentUser } = globalState;
   console.log("this is currentUser: ", currentUser);

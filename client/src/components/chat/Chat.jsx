@@ -9,19 +9,22 @@ import io from "socket.io-client";
 
 // Import internal components
 import { Store } from "../../data/Store";
+// import socket from "../../common/SocketIoInstance";
 
 import "./Chat.css";
 
-const Chat = ({ chatroomId }) => {
+const Chat = ({ chatroomId, currentSocket }) => {
   const [seedString, setSeedString] = useState("");
   const [input, setInput] = useState("");
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
   const [globalState, dispatch] = useContext(Store);
-
   const { currentUser } = globalState;
+  const [socketConnected, setSocketConnected] = useState(false);
 
   useEffect(() => {
+
+    // fetch chatroom details: the chatroom_name
     const fetchShowChatRoom = async () => {
       if (chatroomId) {
         const axiosConfig = {
@@ -36,6 +39,7 @@ const Chat = ({ chatroomId }) => {
       }
     };
 
+    // fetch the messages
     const fetchListMessages = async () => {
       if (chatroomId) {
         const axiosConfig = {
@@ -48,35 +52,29 @@ const Chat = ({ chatroomId }) => {
         console.log("fetchListMessages response is: ", response);
         setMessages(response.data.messages);
       }
+      currentSocket.emit("join chat", chatroomId);
     };
 
     fetchShowChatRoom();
     fetchListMessages();
+    // trythisfunction();
 
-    // insert socket code here (when chatroomId runs, and after the messages are being loaded and displayed,
-    // mount the socket)
+    return () => {
+      currentSocket.emit("leave chat", chatroomId);
+    }
 
-    
-    
   }, [chatroomId]);
 
   useEffect(() => {
-    const mountComponentAsync = async () => {
-      const socket = io("http://localhost:4000/api/socket");
-      socket.on("newMessage", (messageObject) => {
-        console.log(`this is messageObject: ${JSON.stringify(messageObject)}`);
-        setMessages([...messages, messageObject]);
-        // console.log("closing socket..");
-        // socket.close();
-      });
-    };
+    // real-time fetch messages
+    currentSocket.on("message received", (newMessageReceived) => {
+      console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
+      console.log(`messages before setMessages: ${JSON.stringify(messages)}`);
+      setMessages([...messages, newMessageReceived]);
+      console.log(`messages after setMessages: ${JSON.stringify(messages)}`);
+    });
 
-    mountComponentAsync();
-  },[messages]);
-
-  useEffect(() => {
-    setSeedString(Math.floor(Math.random() * 5000));
-  }, [chatroomId]);
+  });
 
   const sendMessageHandler = async (e) => {
     e.preventDefault();
@@ -91,19 +89,29 @@ const Chat = ({ chatroomId }) => {
 
     const messageData = {
       "chatId": chatroomId,
-      "name": currentUser.username,
+      "sender": {
+        "userId": currentUser.userId,
+        "username": currentUser.username,
+      },
       "message": input,
     };
     
     const response = await axios.post(`http://localhost:4000/api/v1/chat/${chatroomId}/message`, messageData, axiosConfig);
     console.log("response is: ", response);
     
+    setMessages([...messages, response.data.message]);
+    currentSocket.emit("new message", response.data);
+    
     setInput("");
   };
 
+  useEffect(() => {
+    setSeedString(Math.floor(Math.random() * 5000));
+  }, [chatroomId]);
+
   const displayMessages = messages?.map((message) => (
-    <p key={message._id} className={`chat__message ${message.name == currentUser.username && "chat__receiver"}`}>
-      <span className="chat__name">{message.name}</span>
+    <p key={message._id} className={`chat__message ${message.sender.username == currentUser.username && "chat__receiver"}`}>
+      <span className="chat__name">{message.sender.username}</span>
       {message.message}
       <span className="chat__timestamp">{message.timestamp}</span>
     </p>

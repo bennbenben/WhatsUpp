@@ -1,7 +1,8 @@
 const chatroomModel = require("../models/chatroomModel");
 const messagesModel = require("../models/messagesModel");
 const ErrorResponse = require("../utils/ErrorResponse");
-const userModel = require("../models/userModel")
+const userModel = require("../models/userModel");
+const uniqueArray = require("../utils/Common");
 
 // Display all open chat rooms in SidebarChat
 exports.listChatroom = async (req, res, next) => {
@@ -31,7 +32,7 @@ exports.listChatroom = async (req, res, next) => {
 
 // Create a chatroom
 exports.createChatroom = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   //body is going to receive 2 things
   //1. participants - array of names
   //2. chatroom name - string
@@ -42,7 +43,7 @@ exports.createChatroom = async (req, res, next) => {
       participants: req.body.participants,
     });
 
-    console.log(`chatroomDTO: ${chatroomDTO}`);
+    // console.log(`chatroomDTO: ${chatroomDTO}`);
 
     res.status(201).json({ success: true, chatroomId: chatroomDTO._id });
 
@@ -61,7 +62,7 @@ exports.showChatroom = async (req, res, next) => {
   };
 
   try {
-    console.log(`these are the req.params: ${req.params}`);
+    // console.log(`these are the req.params: ${req.params}`);
     const chatroomId = req.params.chatroomId;
     chatroom = await chatroomModel.findById(chatroomId);
     
@@ -78,7 +79,7 @@ exports.listMessage = async (req, res, next) => {
   let messages = []
         
   try {
-    console.log(`these are the req.params: ${JSON.stringify(req.params.chatroomId)}`);
+    // console.log(`these are the req.params: ${JSON.stringify(req.params.chatroomId)}`);
     messages = await messagesModel.find({ chatId : req.params.chatroomId }).exec();
 //       // need to sort messages here by timestamp
 //       // and also install luxon to post currentTimenNow
@@ -95,13 +96,25 @@ exports.createMessage = async (req, res, next) => {
   const message = req.body;
 
   try {
-    await messagesModel.create(message);
+    const createdMessage = await messagesModel.create(message);
+    console.log(`createdMessage is: ${createdMessage}`);
+    const chatroomDTO = await chatroomModel.findById(message.chatId);
+    const participants = chatroomDTO.participants.map(
+      (user) => ({
+        "userId": user.userId,
+        "username": user.username,
+      })
+    );
+    
+    const uniqueParticipants = uniqueArray(participants, "userId");
+    // console.log("uniqueParticipants: ", uniqueParticipants);
+
+    return res.status(201).json({ success: true, message: createdMessage, participants: uniqueParticipants });
+
   } catch (error) {
     return next(new ErrorResponse("Failed to send message", 500));
   };
-
-  return res.status(201).json({ success: true, message: message });
-}
+};
 
 // List all users from DB
 exports.listUsers = async (req, res, next) => {

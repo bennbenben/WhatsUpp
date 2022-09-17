@@ -8,7 +8,7 @@ import AddChatroom from "./AddChatroom";
 import { Store } from "../../data/Store";
 import { setChatroomId } from "../../data/Actions";
 
-const SidebarChat = ({ id, name, addNewChat }) => {
+const SidebarChat = ({ id, name }) => {
   const [globalState, dispatch] = useContext(Store);
   const [seedString, setSeedString] = useState("");
 

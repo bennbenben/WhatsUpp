@@ -6,9 +6,15 @@ const messageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
+    sender: {
+      userId: {
+        type: String,
+        required: [true, "Please include sender's userId"],
+      },
+      username: {
+        type: String,
+        required: [true, "Please include sender's username"],
+      },
     },
     message: {
       type: String,

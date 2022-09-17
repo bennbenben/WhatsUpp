@@ -5,8 +5,8 @@ const ErrorResponse = require("../utils/ErrorResponse");
 exports.protect = async (req, res, next) => {
   let token;
 
-  console.log("req is: ", req);
-  console.log("req.headers is: ", req.headers);
+  // console.log("req is: ", req);
+  // console.log("req.headers is: ", req.headers);
 
   if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
     // Bearer <jsonwebtoken: long strings>

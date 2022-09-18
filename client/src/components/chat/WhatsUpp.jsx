@@ -22,12 +22,12 @@ const WhatsUpp = () => {
 
     setCurrentSocket(socket);
     return () => { socket.disconnect(true) }
-  }, [])
+  }, []);
 
   return (
     <>
-      <SidebarLayout currentSocket={currentSocket} />
-      {chatroomId && <Chat chatroomId={chatroomId} currentSocket={currentSocket} />}
+      {currentSocket && <SidebarLayout currentSocket={currentSocket} />}
+      {currentSocket && chatroomId && <Chat chatroomId={chatroomId} currentSocket={currentSocket} />}
       {/* <Private /> */}
     </>
   );

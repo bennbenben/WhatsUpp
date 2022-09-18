@@ -44,7 +44,7 @@ const AddChatroom = () => {
         `http://localhost:4000/api/v1/chat/listUsers`,
         axiosConfig
       );
-      console.log("listAvailableUsers response is: ", response.data.usersList);
+      // console.log("listAvailableUsers response is: ", response.data.usersList);
       response.data.usersList.map((userObject) => {
         setDisplayUsers((prevList) => {
           return [

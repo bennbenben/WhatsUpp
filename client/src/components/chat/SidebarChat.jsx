@@ -30,7 +30,6 @@ const SidebarChat = ({ id, name, lastMessage }) => {
           <p>{lastMessage || "Click to start chatting"}</p>
         </div>
       </div>
-    // </Link>
   );
 };
 

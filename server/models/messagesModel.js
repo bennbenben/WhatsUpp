@@ -27,6 +27,7 @@ const messageSchema = new mongoose.Schema(
   },
   {
     collection: "messages",
+    timestamps: true,
   }
 );
 

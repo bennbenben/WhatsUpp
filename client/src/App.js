@@ -19,18 +19,19 @@ const App = () => {
       <div className="app__body">
         <BrowserRouter>
           <Routes>
+            
             {/* Protected routes */}
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<WhatsUpp />} />
             </Route>
 
             {/* Public routes */}
-            {/* <Route element={<PublicRoute />} > */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgotpassword" element={<ForgotPassword />} />
-            <Route path="/passwordreset/:resetToken" element={<ResetPassword />} />
-            {/* </Route> */}
+            <Route element={<PublicRoute />} >
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/forgotpassword" element={<ForgotPassword />} />
+              <Route path="/passwordreset/:resetToken" element={<ResetPassword />} />
+            </Route>
 
           </Routes>
         </BrowserRouter>

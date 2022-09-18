@@ -20,8 +20,5 @@ To Do (in priority):
 Bonus:
 6. Read/unread status
 4. Refresh token
-fix login/register css
-styled components
-Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens
 
 Before commit: need change back the local connectionURI

@@ -29,6 +29,7 @@ export const reducerFunction = (state, action) => {
       return {
         ...state,
         currentUser: null,
+        isAuthenticated: false,
         isLoading: false,
       };
 

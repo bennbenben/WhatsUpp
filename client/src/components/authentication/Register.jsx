@@ -40,23 +40,11 @@ const Register = () => {
     try {
       // Retrieve JWT token from BE server (as means of authentication)
       const response = await axios.post( "/api/v1/register", { username, email, password }, axiosConfig);
-      console.log("this is response: ", response);
-      
-      // Keep JWT token in localStorage
-      localStorage.setItem("authToken", response.data.token);
-
-      // Decode the remaining Base64 headers and keep required fields in context
-      const base64Payload = JSON.stringify(response.data.token).split(".")[1];
-      // console.log("base64Payload is: " , base64Payload);
-      const userId = JSON.parse(window.atob(base64Payload)).userId;
-      // console.log("this is userId: ", userId);
-      dispatch(userLoginSuccess(userId));
-      navigate("/");
-
-    //   console.log(`response.data: ${response.data}`);
+      console.log("this is registration response: ", response);
+      dispatch(setLoadingFalse());
+      navigate("/login");
       
     } catch (error) {
-      // console.log(`error: ${error}`);
       dispatch(setLoadingFalse());
       setError(error.response.data.error);
       setTimeout(() => {

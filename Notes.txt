@@ -1,11 +1,13 @@
 To Do (in priority):
-1. Integrate socket io -> for latestMessage / sidebarchat. Remaining action is happening inside SidebarLayout.jsx
-  >>> sender does not update
+1. *consult Integrate socket io -> for latestMessage / sidebarchat. Remaining action is happening inside SidebarLayout.jsx
+  >>> sender does not update (sender is being filtered out in the BE. this one nid to fix)
   >>> receiver receives the signal, state is updating, but is not rendering
   >>> displayChatrooms is not re-rendering even though the state is updating
 
+========#2 is completed========
 2. User needs to re-login after refresh *consult
   >>> am half-considering creating a custom useAuth() hook to put inside the <PrivateRoute />
+========#2 is completed========
 
 3. Bugfix/why cannot close drawer + createbar *consult
 4. long message breaks the CSS -> need text wrap

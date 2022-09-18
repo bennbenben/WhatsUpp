@@ -1,6 +1,7 @@
 import { createContext } from "react";
 
 export const initialState = {
+  isLoading: false,
   currentUser: {
     userId: null,
     username: null,
@@ -9,7 +10,6 @@ export const initialState = {
     bio: null,
   },
   chatroomId: null,
-  isLoading: false,
 };
 
 export const Store = createContext(null);

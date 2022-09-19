@@ -10,7 +10,7 @@ const connectDB = () => {
   } else {
     profile = "local";
     // to change back if wana do dev on local
-    connectionString = process.env.MONGO_LOCAL_URI || process.env.MONGO_URI2;
+    connectionString = process.env.MONGO_URI2 || process.env.MONGO_URI2;
   }
   console.log("Mongoose connect successfully");
   mongoose

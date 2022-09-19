@@ -69,21 +69,32 @@ const SidebarLayout = ({ currentSocket }) => {
 
   useEffect(() => {
     // real-time update chatrooms
+    console.log('SOCKET useEffect running')
     currentSocket.on("update latest message", (newMessageReceived) => {
       console.log("update latest message signal received");
       console.log("this is the initial state of chatrooms: ", chatrooms);
       const chatroomId = newMessageReceived.chatId;
-      chatrooms.forEach((chatroomObject) => {
+      //cannot do forEach - temporary ,if wwe change here - it doesnt modify
+      let updatedChatrooms = chatrooms.map((chatroomObject) => {
         if (chatroomObject.id == chatroomId) {
           chatroomObject.latestMessage = newMessageReceived.message;
         }
-        // Option #2: use leetcode method => for() loop. if meet the condition, splice the object (python pop), and then unshift (adds to the left)
-      });
-      setChatrooms(chatrooms);
+        return chatroomObject
+      })
+      // chatrooms.forEach((chatroomObject) => {
+      //   if (chatroomObject.id == chatroomId) {
+      //     updatedChatroom = {...chatroomObject}
+      //     updatedChatroom.latestMessage = newMessageReceived.message;
+      //   }
+      //   // Option #2: use leetcode method => for() loop. if meet the condition, splice the object (python pop), and then unshift (adds to the left)
+      // });
+
+      setChatrooms(updatedChatrooms);
       console.log("this is the after state of chatrooms: ", chatrooms);
     });
   }, []);
 
+  console.log('chatroom messages',chatrooms)
   // let displayChatrooms2 = chatrooms.map((room) => (
   //   <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
   // ))

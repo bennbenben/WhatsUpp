@@ -14,7 +14,7 @@ const WhatsUpp = () => {
 
   useEffect(() => {
     let socket = io("http://localhost:4000/api/socket");
-    
+    console.log('currentUser is :', currentUser)
     socket.emit("setup", currentUser.userId);
     socket.on("connected", () => {
       console.log("connected event is received");
@@ -22,7 +22,8 @@ const WhatsUpp = () => {
 
     setCurrentSocket(socket);
     return () => { socket.disconnect(true) }
-  }, []);
+  }, [currentUser]);
+
 
   return (
     <>

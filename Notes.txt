@@ -4,12 +4,15 @@ To Do (in priority):
   >>> receiver receives the signal, state is updating, but is not rendering
   >>> displayChatrooms is not re-rendering even though the state is updating
 
+  >>> Check list of participants - see the socket is sending to who
+  >>> Socket upon page load sometimes not running properly
+
 ========#2 is completed========
 2. User needs to re-login after refresh *consult
   >>> am half-considering creating a custom useAuth() hook to put inside the <PrivateRoute />
 ========#2 is completed========
 
-3. Bugfix/why cannot close drawer + createbar *consult
+3. Bugfix/why cannot close drawer + createbar *consult ---- OK
 4. long message breaks the CSS -> need text wrap
 5. Logout in the 3 dots button
   >>> dispatch() already has a logout action configured, just need the dropdown menu + button

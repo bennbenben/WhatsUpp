@@ -43,6 +43,7 @@ io.of("/api/socket").on("connection", (socket) => {
 
   socket.on("new message", (newMessageReceived) => {
     const { message, participants } = newMessageReceived;
+    console.log('participants in BE ',participants)
 
     if (!participants) {
       return console.log("participants not defined");
@@ -52,7 +53,7 @@ io.of("/api/socket").on("connection", (socket) => {
     
     participants.forEach((userObject) => {
       socket.to(userObject.userId).emit("update latest message", message);
-      // console.log("emitted update event")
+      console.log("emitted update event", userObject)
     });
   });
 

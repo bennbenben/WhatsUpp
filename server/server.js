@@ -15,10 +15,17 @@ const server = app.listen(port, () => {
 });
 
 // sockets
+let originURL;
+if (process.env.NODE_ENV != "production") {
+  originURL = "http://localhost:3000";
+} else {
+  originURL = "https://whats-upp.herokuapp.com";
+}
+
 const io = require("socket.io")(server, {
   pingTimeout: 60000, //60 000 ms = 60s
   cors: {
-    origin: ["https://whats-upp.herokuapp.com", "http://localhost:3000"]
+    origin: originURL,
   },
 });
 

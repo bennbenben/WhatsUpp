@@ -41,7 +41,7 @@ const AddChatroom = () => {
         },
       };
       const response = await axios.get(
-        `http://localhost:4000/api/v1/chat/listUsers`,
+        `/api/v1/chat/listUsers`,
         axiosConfig
       );
       // console.log("listAvailableUsers response is: ", response.data.usersList);
@@ -124,7 +124,7 @@ const AddChatroom = () => {
       "participants": selectedUsers
     };
     
-    const response = await axios.post(`http://localhost:4000/api/v1/chat/`, chatData, axiosConfig);
+    const response = await axios.post(`/api/v1/chat/`, chatData, axiosConfig);
     console.log("response is: ", response);
     
     // setInput("");

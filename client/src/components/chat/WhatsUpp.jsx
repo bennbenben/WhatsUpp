@@ -13,7 +13,7 @@ const WhatsUpp = () => {
   const [currentSocket, setCurrentSocket] = useState(false);
 
   useEffect(() => {
-    let socket = io("http://localhost:4000/api/socket");
+    let socket = io("/api/socket");
     console.log('currentUser is :', currentUser)
     socket.emit("setup", currentUser.userId);
     socket.on("connected", () => {

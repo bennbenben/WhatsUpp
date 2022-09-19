@@ -30,7 +30,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`
           }
         };
-        const response = await axios.get(`http://localhost:4000/api/v1/chat/${chatroomId}`, axiosConfig);
+        const response = await axios.get(`/api/v1/chat/${chatroomId}`, axiosConfig);
         console.log("fetchShowChatRoom response is: ", response);
         setRoomName(response.data.chatroom.chatroom_name);
       }
@@ -45,7 +45,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`
           }
         };
-        const response = await axios.get(`http://localhost:4000/api/v1/chat/${chatroomId}/message`, axiosConfig);
+        const response = await axios.get(`/api/v1/chat/${chatroomId}/message`, axiosConfig);
         console.log("fetchListMessages response is: ", response);
         setMessages(response.data.messages);
       }
@@ -95,7 +95,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
       "message": input,
     };
     
-    const response = await axios.post(`http://localhost:4000/api/v1/chat/${chatroomId}/message`, messageData, axiosConfig);
+    const response = await axios.post(`/api/v1/chat/${chatroomId}/message`, messageData, axiosConfig);
     console.log("response is: ", response);
     
     setMessages([...messages, response.data.message]);

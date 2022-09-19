@@ -18,8 +18,8 @@ const server = app.listen(port, () => {
 const io = require("socket.io")(server, {
   pingTimeout: 60000, //60 000 ms = 60s
   cors: {
-    origin: "http://localhost:3000",
-  }
+    origin: ["https://whats-upp.herokuapp.com", "http://localhost:3000"]
+  },
 });
 
 io.of("/api/socket").on("connection", (socket) => {

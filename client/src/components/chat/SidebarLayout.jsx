@@ -32,7 +32,7 @@ const SidebarLayout = ({ currentSocket }) => {
       };
 
       const data = { "userId": currentUser.userId };
-      const response = await axios.post("http://localhost:4000/api/v1/chat/listchatroom", data, axiosConfig);
+      const response = await axios.post("/api/v1/chat/listchatroom", data, axiosConfig);
       if (response.data.chatrooms) {
         // From API response data, map it into array and set into the chatrooms state
         const numOfChatrooms = response.data.chatrooms.length;

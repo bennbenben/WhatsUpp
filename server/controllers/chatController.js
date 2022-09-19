@@ -28,6 +28,12 @@ exports.listChatroom = async (req, res, next) => {
       .sort({"timestamp": "desc"})
       .limit(1);
 
+      console.log("lastmessage is: ", lastMsg);
+
+      if (!lastMsg[0]) {
+        return;
+      }
+
       return {
         "chatroomId": lastMsg[0].chatId,
         "lastMsg": lastMsg[0].message,
@@ -107,8 +113,9 @@ exports.listMessage = async (req, res, next) => {
 
 // Creates a message
 exports.createMessage = async (req, res, next) => {
-  console.log("inside createMessage");
-  const message = req.body;
+  // console.log("inside createMessage");
+  let message = req.body;
+  message.timestamp = Date.now();
 
   try {
     const createdMessage = await messagesModel.create(message);

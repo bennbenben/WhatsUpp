@@ -1,19 +1,12 @@
 // Import libraries
-import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-// Import internal components
-import { Store } from "../../data/Store";
-
 const PublicRoute = () => {
-  const [globalState, dispatch] = useContext(Store);
-  const { currentUser: { userId } } = globalState;
-
-  if (userId) {
+  if (localStorage.getItem("authToken")) {
     return <Navigate to="/" replace />;
   }
 
-  return <Outlet />
-}
+  return <Outlet />;
+};
 
 export default PublicRoute;

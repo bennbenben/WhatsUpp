@@ -29,6 +29,7 @@ export const reducerFunction = (state, action) => {
       return {
         ...state,
         currentUser: null,
+        isAuthenticated: false,
         isLoading: false,
       };
 
@@ -37,6 +38,13 @@ export const reducerFunction = (state, action) => {
         ...state,
         chatroomId: action.payload.chatroomId,
       };
+    
+    case "TOGGLE_UPDATE_SENDER_CHATROOM":
+      console.log("toggleUpdateSenderChatroom runs once");
+      return {
+        ...state,
+        updateSenderChatroom: !state.updateSenderChatroom
+      }
 
     default:
       return true;

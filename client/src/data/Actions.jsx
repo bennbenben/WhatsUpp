@@ -4,6 +4,7 @@ const action_types = {
   USER_LOGIN_SUCCESS: "USER_LOGIN_SUCCESS",
   USER_LOGOUT: "USER_LOGOUT",
   SET_CHATROOM_ID: "SET_CHATROOM_ID",
+  TOGGLE_UPDATE_SENDER_CHATROOM: "TOGGLE_UPDATE_SENDER_CHATROOM",
 };
 
 export const setLoadingFalse = () => ({
@@ -32,4 +33,8 @@ export const userLogout = () => ({
 export const setChatroomId = (chatroomId) => ({
   type: action_types.SET_CHATROOM_ID,
   payload: { chatroomId: chatroomId },
+});
+
+export const toggleUpdateSenderChatroom = () => ({
+  type: action_types.TOGGLE_UPDATE_SENDER_CHATROOM,
 });

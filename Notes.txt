@@ -1,16 +1,27 @@
+To Do (in priority):
+1. *consult Integrate socket io -> for latestMessage / sidebarchat. Remaining action is happening inside SidebarLayout.jsx
+  >>> sender does not update (sender is being filtered out in the BE. this one nid to fix)
+  >>> receiver receives the signal, state is updating, but is not rendering
+  >>> displayChatrooms is not re-rendering even though the state is updating
 
-To Do:
-1. Style Modal for addnewchat
-1.1. Need to bugfix - why cannot close drawer + createbar
-******************1.2. Fix user need relogin after refresh******************
-****************2. Integrate socket io -> for latestMessage / sidebarchat****************
-3. Logout in the 3 dots button
-4. Read/unread status
+  >>> Check list of participants - see the socket is sending to who
+  >>> Socket upon page load sometimes not running properly
+
+========#2 is completed========
+2. User needs to re-login after refresh *consult
+  >>> am half-considering creating a custom useAuth() hook to put inside the <PrivateRoute />
+========#2 is completed========
+
+3. Bugfix/why cannot close drawer + createbar *consult ---- OK
+4. long message breaks the CSS -> need text wrap
+5. Logout in the 3 dots button
+  >>> dispatch() already has a logout action configured, just need the dropdown menu + button
+6. Style modal for addNewChat
+7. Message timestamp change to GMT+8
+
 
 Bonus:
+6. Read/unread status
 4. Refresh token
-fix login/register css
-styled components
-Unprotected routes - register/pw change(?) - KIV, need consult Siewla about warning + Refresh tokens
 
 Before commit: need change back the local connectionURI

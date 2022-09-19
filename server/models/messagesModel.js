@@ -22,11 +22,12 @@ const messageSchema = new mongoose.Schema(
     },
     timestamp: {
       type: Date,
-      default: Date.now(),
+      required: true,
     },
   },
   {
     collection: "messages",
+    timestamps: true,
   }
 );
 

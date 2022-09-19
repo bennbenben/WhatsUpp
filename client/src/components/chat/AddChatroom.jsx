@@ -44,7 +44,7 @@ const AddChatroom = () => {
         `http://localhost:4000/api/v1/chat/listUsers`,
         axiosConfig
       );
-      console.log("listAvailableUsers response is: ", response.data.usersList);
+      // console.log("listAvailableUsers response is: ", response.data.usersList);
       response.data.usersList.map((userObject) => {
         setDisplayUsers((prevList) => {
           return [
@@ -58,6 +58,7 @@ const AddChatroom = () => {
   }, []);
 
   const toggleDrawer = (anchor, open) => (event) => {
+    console.log('toggle drawer happened')
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -103,10 +104,10 @@ const AddChatroom = () => {
     }
   }
 
-  const handleCreateChat = async () => {
+  const handleCreateChat = async (e) => {
     // Close drawer
     // Todo: Troubleshoot - why is SideDrawer not closing? stat is not updating
-    toggleDrawer('left', false)
+    toggleDrawer('left', false)(e)
 
     console.log('create chat request sent!')
 

@@ -8,8 +8,8 @@ import MicIcon from "@mui/icons-material/Mic";
 
 // Import internal components
 import { Store } from "../../data/Store";
-
 import "./Chat.css";
+import { toggleUpdateSenderChatroom } from "../../data/Actions";
 
 const Chat = ({ chatroomId, currentSocket }) => {
   const [seedString, setSeedString] = useState("");
@@ -18,7 +18,6 @@ const Chat = ({ chatroomId, currentSocket }) => {
   const [messages, setMessages] = useState([]);
   const [globalState, dispatch] = useContext(Store);
   const { currentUser } = globalState;
-  const [socketConnected, setSocketConnected] = useState(false);
 
   useEffect(() => {
 
@@ -67,14 +66,14 @@ const Chat = ({ chatroomId, currentSocket }) => {
     // real-time fetch messages
     currentSocket.on("message received", (newMessageReceived) => {
       console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
-      console.log(`messages before setMessages: ${JSON.stringify(messages)}`);
+      // console.log(`messages before setMessages: ${JSON.stringify(messages)}`);
       setMessages(prevMsgs => {
         return [...prevMsgs, newMessageReceived]
       });
-      console.log(`messages after setMessages: ${JSON.stringify(messages)}`);
+      // console.log(`messages after setMessages: ${JSON.stringify(messages)}`);
     });
 
-  }, []);
+  }, [currentUser]);
 
   const sendMessageHandler = async (e) => {
     e.preventDefault();
@@ -101,6 +100,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
     
     setMessages([...messages, response.data.message]);
     currentSocket.emit("new message", response.data);
+    dispatch(toggleUpdateSenderChatroom());
     
     setInput("");
   };
@@ -109,13 +109,28 @@ const Chat = ({ chatroomId, currentSocket }) => {
     setSeedString(Math.floor(Math.random() * 5000));
   }, [chatroomId]);
 
-  const displayMessages = messages?.map((message) => (
+  const displayMessages = (messages.length!=0) ? 
+  
+  messages?.map((message) => (
     <p key={message._id} className={`chat__message ${message.sender.username == currentUser.username && "chat__receiver"}`}>
       <span className="chat__name">{message.sender.username}</span>
       {message.message}
       <span className="chat__timestamp">{message.timestamp}</span>
     </p>
-  ));
+  )) : 
+
+  <>
+    <p className={`chat__message ${false && "chat__receiver"}`}>
+      <span className="chat__name">Tan, Gina</span>
+      Hey Guys
+      <span className="chat__timestamp">5.53pm</span>
+    </p>
+    <p className={`chat__message ${true && "chat__receiver"}`}>
+      <span className="chat__name">Bobo Tan</span>
+      This is a sample message
+      <span className="chat__timestamp">6.01pm</span>
+    </p>
+  </>;
 
   return (
     <div className="chat">
@@ -135,16 +150,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
 
       <div className="chat__body">
         {displayMessages}
-        <p className={`chat__message ${false && "chat__receiver"}`}>
-          <span className="chat__name">Tan, Gina</span>
-          Hey Guys
-          <span className="chat__timestamp">5.53pm</span>
-        </p>
-        <p className={`chat__message ${true && "chat__receiver"}`}>
-          <span className="chat__name">Bobo Tan</span>
-          This is message with p tag and class chat__message
-          <span className="chat__timestamp">6.01pm</span>
-        </p>
+        
       </div>
 
       <div className="chat__footer">

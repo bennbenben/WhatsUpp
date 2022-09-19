@@ -28,15 +28,9 @@ const Login = () => {
   try {
     // Retrieve JWT token from BE server (as means of authentication)
     const response = await axios.post("/api/v1/login", { email, password }, axiosConfig);
-    console.log(`response.data: ${JSON.stringify(response.data)}`);
-
+    
     // Keep JWT token in localStorage (change to cookie later)
     localStorage.setItem("authToken", response.data.token);
-
-    // Decode the remaining Base64 headers and keep required fields in context
-    const base64Payload = JSON.stringify(response.data.token).split(".")[1].split("-")[0];
-    const currentUser = JSON.parse(window.atob(base64Payload));
-    dispatch(userLoginSuccess(currentUser));
     navigate("/");
 
   } catch (error) {

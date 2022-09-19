@@ -16,9 +16,8 @@ import AddChatroom from "./AddChatroom";
 
 const SidebarLayout = ({ currentSocket }) => {
   const [globalState, dispatch] = useContext(Store);
-  const { currentUser } = globalState;
+  const { currentUser, updateSenderChatroom } = globalState;
   const [chatrooms, setChatrooms] = useState([]);
-  console.log("this is currentUser: ", currentUser);
 
   useEffect(() => {
     dispatch(setLoadingTrue());
@@ -33,22 +32,21 @@ const SidebarLayout = ({ currentSocket }) => {
       };
 
       const data = { "userId": currentUser.userId };
-
       const response = await axios.post("http://localhost:4000/api/v1/chat/listchatroom", data, axiosConfig);
-
-      console.log(`response.data: ${JSON.stringify(response.data)}`);
-
       if (response.data.chatrooms) {
-        console.log(`responseData.chatrooms are available\nchatrooms are: ${response.data.chatrooms}`);
-        
         // From API response data, map it into array and set into the chatrooms state
         const numOfChatrooms = response.data.chatrooms.length;
         let chatroomArray = [];
 
         for (let i = 0; i<numOfChatrooms; i++) {
           const { _id, chatroom_name, avatar } = response.data.chatrooms[i];
-          const latest_message = response.data.latestMessage[i].lastMsg;
-          console.log("latestmsg is :::::: ", latest_message)
+          let latest_message;
+          if (!response.data.latestMessage[i]) {
+            latest_message = null;
+          } else {
+            latest_message = response.data.latestMessage[i].lastMsg;
+          };
+
           chatroomArray.push({
             "id": _id,
             "name": chatroom_name,
@@ -66,10 +64,50 @@ const SidebarLayout = ({ currentSocket }) => {
 
     fetchChatrooms();
     dispatch(setLoadingFalse());
-  }, []);
+  }, [updateSenderChatroom]);
 
-  console.log("chatroomsis:",chatrooms)
+  useEffect(() => {
+    // real-time update chatrooms
+    console.log('SOCKET useEffect running')
+    currentSocket.on("update latest message", (newMessageReceived) => {
+      console.log("update latest message signal received");
+      console.log("this is the initial state of chatrooms: ", chatrooms);
+      const chatroomId = newMessageReceived.chatId;
+      //cannot do forEach - temporary ,if wwe change here - it doesnt modify
+      let updatedChatrooms = chatrooms.map((chatroomObject) => {
+        if (chatroomObject.id == chatroomId) {
+          chatroomObject.latestMessage = newMessageReceived.message;
+        }
+        return chatroomObject
+      })
+      setChatrooms(updatedChatrooms);
+      console.log("this is the after state of chatrooms: ", chatrooms);
+    });
+  });
+
+  console.log('chatroom messages',chatrooms)
+  // let displayChatrooms2 = chatrooms.map((room) => (
+  //   <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
+  // ))
+
+  // useEffect(() => {
+  //   const displayChatrooms2 = () => {
+  //     chatrooms.map((room) => (
+  //       <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
+  //     ))}
+  //   // displayChatrooms2();
+  //   setDisplayChatrooms(displayChatrooms2());
+  // }, [chatrooms])
   
+
+  // const displayChatrooms = () => {
+  //   return (
+  //     chatrooms.map((room) => (
+  //       <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
+  //     ))
+  //   );
+  // }
+
   const displayChatrooms = chatrooms.map((room) => (
     <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
   ));
@@ -78,7 +116,7 @@ const SidebarLayout = ({ currentSocket }) => {
     <>
       <div className="sidebar__main">
         <div className="sidebar__header">
-          <Avatar src={currentUser ? currentUser.avatar : null } />
+          <Avatar src={currentUser ? currentUser.avatar : null} />
           <div className="sidebar__headerRight">
             <IconButton><DonutLargeIcon /></IconButton>
             <AddChatroom />

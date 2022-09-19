@@ -89,7 +89,13 @@ exports.forgotPassword = async (req, res, next) => {
     await userDTO.save();
 
     // send email
-    const resetURL = `http://localhost:3000/passwordreset/${resetToken}`;
+    let resetURL;
+    if (process.env.NODE_ENV != "production" ) {
+      resetURL = `http://localhost:3000/passwordreset/${resetToken}`;
+    } else {
+      resetURL = `https://whats-upp.herokuapp.com/passwordreset/${resetToken}`;
+    };
+    
     const emailMsg = `
       <h1>You have requested a password reset</h1>
       <p>Please go to this link to reset your password</p>

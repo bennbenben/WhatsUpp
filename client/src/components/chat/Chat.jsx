@@ -9,6 +9,7 @@ import MicIcon from "@mui/icons-material/Mic";
 // Import internal components
 import { Store } from "../../data/Store";
 import "./Chat.css";
+import { toggleUpdateSenderChatroom } from "../../data/Actions";
 
 const Chat = ({ chatroomId, currentSocket }) => {
   const [seedString, setSeedString] = useState("");
@@ -64,7 +65,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
   useEffect(() => {
     // real-time fetch messages
     currentSocket.on("message received", (newMessageReceived) => {
-      // console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
+      console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
       // console.log(`messages before setMessages: ${JSON.stringify(messages)}`);
       setMessages(prevMsgs => {
         return [...prevMsgs, newMessageReceived]
@@ -72,7 +73,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
       // console.log(`messages after setMessages: ${JSON.stringify(messages)}`);
     });
 
-  }, []);
+  }, [currentUser]);
 
   const sendMessageHandler = async (e) => {
     e.preventDefault();
@@ -99,6 +100,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
     
     setMessages([...messages, response.data.message]);
     currentSocket.emit("new message", response.data);
+    dispatch(toggleUpdateSenderChatroom());
     
     setInput("");
   };

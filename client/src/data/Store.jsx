@@ -10,6 +10,7 @@ export const initialState = {
     bio: null,
   },
   chatroomId: null,
+  updateSenderChatroom: false,
 };
 
 export const Store = createContext(null);

@@ -16,9 +16,8 @@ import AddChatroom from "./AddChatroom";
 
 const SidebarLayout = ({ currentSocket }) => {
   const [globalState, dispatch] = useContext(Store);
-  const { currentUser } = globalState;
+  const { currentUser, updateSenderChatroom } = globalState;
   const [chatrooms, setChatrooms] = useState([]);
-  // const [displayChatrooms, setDisplayChatrooms] = useState();
 
   useEffect(() => {
     dispatch(setLoadingTrue());
@@ -65,7 +64,7 @@ const SidebarLayout = ({ currentSocket }) => {
 
     fetchChatrooms();
     dispatch(setLoadingFalse());
-  }, []);
+  }, [updateSenderChatroom]);
 
   useEffect(() => {
     // real-time update chatrooms
@@ -81,18 +80,10 @@ const SidebarLayout = ({ currentSocket }) => {
         }
         return chatroomObject
       })
-      // chatrooms.forEach((chatroomObject) => {
-      //   if (chatroomObject.id == chatroomId) {
-      //     updatedChatroom = {...chatroomObject}
-      //     updatedChatroom.latestMessage = newMessageReceived.message;
-      //   }
-      //   // Option #2: use leetcode method => for() loop. if meet the condition, splice the object (python pop), and then unshift (adds to the left)
-      // });
-
       setChatrooms(updatedChatrooms);
       console.log("this is the after state of chatrooms: ", chatrooms);
     });
-  }, []);
+  });
 
   console.log('chatroom messages',chatrooms)
   // let displayChatrooms2 = chatrooms.map((room) => (

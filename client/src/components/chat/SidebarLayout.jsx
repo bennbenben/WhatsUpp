@@ -3,15 +3,14 @@ import { Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { Avatar, IconButton } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 // Import internal components
 import "./SidebarLayout.css";
 import SidebarChat from "./SidebarChat";
 import { Store } from "../../data/Store";
-import { setLoadingFalse, setLoadingTrue } from "../../data/Actions";
+import { setLoadingFalse, setLoadingTrue, userLogout } from "../../data/Actions";
 import AddChatroom from "./AddChatroom";
 
 const SidebarLayout = ({ currentSocket }) => {
@@ -68,10 +67,10 @@ const SidebarLayout = ({ currentSocket }) => {
 
   useEffect(() => {
     // real-time update chatrooms
-    console.log('SOCKET useEffect running')
+    // console.log('SOCKET useEffect running')
     currentSocket.on("update latest message", (newMessageReceived) => {
-      console.log("update latest message signal received");
-      console.log("this is the initial state of chatrooms: ", chatrooms);
+      console.log("Update Latest Message signal received");
+      // console.log("this is the initial state of chatrooms: ", chatrooms);
       const chatroomId = newMessageReceived.chatId;
       //cannot do forEach - temporary ,if wwe change here - it doesnt modify
       let updatedChatrooms = chatrooms.map((chatroomObject) => {
@@ -81,32 +80,28 @@ const SidebarLayout = ({ currentSocket }) => {
         return chatroomObject
       })
       setChatrooms(updatedChatrooms);
-      console.log("this is the after state of chatrooms: ", chatrooms);
+      // console.log("this is the after state of chatrooms: ", chatrooms);
     });
   });
 
-  console.log('chatroom messages',chatrooms)
-  // let displayChatrooms2 = chatrooms.map((room) => (
-  //   <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
-  // ))
+  // console.log('chatroom messages',chatrooms)
 
-  // useEffect(() => {
-  //   const displayChatrooms2 = () => {
-  //     chatrooms.map((room) => (
-  //       <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
-  //     ))}
-  //   // displayChatrooms2();
-  //   setDisplayChatrooms(displayChatrooms2());
-  // }, [chatrooms])
-  
+  const logoutHandler = (e) => {
+    e.preventDefault()
+    console.log('user clicked logout!')
 
-  // const displayChatrooms = () => {
-  //   return (
-  //     chatrooms.map((room) => (
-  //       <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
-  //     ))
-  //   );
-  // }
+    let text = "Confirm Logout?"
+    if (window.confirm(text) == true) {
+     //dispatchContext
+    dispatch(userLogout())
+
+    //remove token from localstorage
+    localStorage.removeItem("authToken")
+    alert("Logout successful, redirecting to login")
+    window.location.reload() 
+    }
+    
+  }
 
   const displayChatrooms = chatrooms.map((room) => (
     <SidebarChat key={room.id} id={room.id} name={room.name} lastMessage={room.latestMessage} />
@@ -118,9 +113,8 @@ const SidebarLayout = ({ currentSocket }) => {
         <div className="sidebar__header">
           <Avatar src={currentUser ? currentUser.avatar : null} />
           <div className="sidebar__headerRight">
-            <IconButton><DonutLargeIcon /></IconButton>
             <AddChatroom />
-            <IconButton><MoreVertIcon /></IconButton>
+            <IconButton onClick={logoutHandler}><LogoutIcon /></IconButton>
           </div>
         </div>
       

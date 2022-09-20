@@ -11,6 +11,7 @@ router.route("/listchatroom").post(protect, chatController.listChatroom);
 router.route("/").post(protect, chatController.createChatroom);
 router.route("/listUsers").get(protect, chatController.listUsers); 
 router.route("/:chatroomId").get(protect, chatController.showChatroom);
+router.route("/:chatroomId/delete").post(protect, chatController.deleteChatroom);
 router.route("/:chatroomId/message").get(protect, chatController.listMessage);
 router.route("/:chatroomId/message").post(protect, chatController.createMessage);
 

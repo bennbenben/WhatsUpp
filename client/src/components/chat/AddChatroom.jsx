@@ -1,8 +1,9 @@
 // Import libraries
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { IconButton } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
+import EditIcon from '@mui/icons-material/Edit';
 
 // Import libraries for SideDrawer
 import Box from "@mui/material/Box";
@@ -21,6 +22,8 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
 // Import internal components
+import { toggleUpdateSenderChatroom } from "../../data/Actions";
+import { Store } from "../../data/Store";
 
 const AddChatroom = () => {
   // For SideDrawer - adding chats
@@ -30,6 +33,7 @@ const AddChatroom = () => {
   const [state, setState] = useState({
     left: false,
   });
+  const [globalState, dispatch] = useContext(Store);
 
   // useEffectAPI call - Fetch all available users
   useEffect(() => {
@@ -58,7 +62,7 @@ const AddChatroom = () => {
   }, []);
 
   const toggleDrawer = (anchor, open) => (event) => {
-    console.log('toggle drawer happened')
+    // console.log('toggle drawer happened')
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -81,13 +85,13 @@ const AddChatroom = () => {
     
     // if user is checked
     if (e.target.checked) {
-      console.log(`add ${e.target.value} to selectedList`)
+      // console.log(`add ${e.target.value} to selectedList`)
       setSelectedUsers(prevList => {
         const userIndex = displayUsers.findIndex( object => object.username == e.target.value);
-        console.log(`userIndex: ${userIndex}`);
+        // console.log(`userIndex: ${userIndex}`);
 
         const userId = displayUsers[userIndex].userId
-        console.log(`userId: ${userId}`);
+        // console.log(`userId: ${userId}`);
 
 
         return [...prevList, {"userId": userId,"username": e.target.value}]
@@ -98,7 +102,7 @@ const AddChatroom = () => {
     if (!e.target.checked) {
       setSelectedUsers(prevList => {
         const deleteIndex = prevList.findIndex( object => object.username == e.target.value)
-        console.log('Delete person index: ',deleteIndex)
+        // console.log('Delete person index: ',deleteIndex)
         return prevList.filter( (person, index) => index !==deleteIndex )
       })
     }
@@ -125,7 +129,10 @@ const AddChatroom = () => {
     };
     
     const response = await axios.post(`/api/v1/chat/`, chatData, axiosConfig);
-    console.log("response is: ", response);
+    dispatch(toggleUpdateSenderChatroom());
+    console.log("handleCreateChat response is: ", response);
+
+    alert(`Successfully created chat: ${chatData.chatroom_name}`)
     
     // setInput("");
   }
@@ -178,7 +185,7 @@ const AddChatroom = () => {
   return (
     <>
       <IconButton onClick={toggleDrawer("left", true)}>
-        <ChatIcon />
+        <EditIcon />
       </IconButton>
       <React.Fragment key={"left"}>
         <Drawer

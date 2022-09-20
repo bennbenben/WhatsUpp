@@ -1,27 +1,23 @@
-To Do (in priority):
-1. *consult Integrate socket io -> for latestMessage / sidebarchat. Remaining action is happening inside SidebarLayout.jsx
-  >>> sender does not update (sender is being filtered out in the BE. this one nid to fix)
-  >>> receiver receives the signal, state is updating, but is not rendering
-  >>> displayChatrooms is not re-rendering even though the state is updating
+Notes on the App
+1. Web Socket used now, is only emitting signal to all but sender
+  - we manually update the sender using context
 
-  >>> Check list of participants - see the socket is sending to who
-  >>> Socket upon page load sometimes not running properly
-
-========#2 is completed========
-2. User needs to re-login after refresh *consult
-  >>> am half-considering creating a custom useAuth() hook to put inside the <PrivateRoute />
-========#2 is completed========
-
-3. Bugfix/why cannot close drawer + createbar *consult ---- OK
-4. long message breaks the CSS -> need text wrap
-5. Logout in the 3 dots button
-  >>> dispatch() already has a logout action configured, just need the dropdown menu + button
-6. Style modal for addNewChat
-7. Message timestamp change to GMT+8
+2. SideBarChatLayout currently has no dependency array
+  - by right should have, and should work as code is correct
 
 
-Bonus:
-6. Read/unread status
-4. Refresh token
+Bonus/Stretch Goals:
+- Read/unread status
+- Refresh token
+- Message timewstamps for different timezones
 
 Before commit: need change back the local connectionURI
+
+## How to start MongoDB
+`sudo mongod --dbpath ~/data/db` <br>
+`mongo`
+
+## How to start MongoDB (as a single node on local)
+`sudo mongod --port 27017 --dbpath ~/data/db --replSet rs0 --bind_ip localhost`
+Open another terminal, `mongo`, then `rs.initiate()`, then if see `rs0:PRIMARY>`, means its working
+Now run `npm run dev`

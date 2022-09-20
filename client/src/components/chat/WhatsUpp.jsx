@@ -17,7 +17,7 @@ const WhatsUpp = () => {
     console.log('currentUser is :', currentUser)
     socket.emit("setup", currentUser.userId);
     socket.on("connected", () => {
-      console.log("connected event is received");
+      console.log("connected socket event is received");
     });
 
     setCurrentSocket(socket);

@@ -8,6 +8,7 @@ const uniqueArray = require("../utils/Common");
 exports.listChatroom = async (req, res, next) => {
   const { userId, username } = req.body;
   // console.log('req.data',req.body)
+  console.log('inside listChatroom')
   let chatrooms = [];
 
   try {
@@ -28,7 +29,7 @@ exports.listChatroom = async (req, res, next) => {
       .sort({"timestamp": "desc"})
       .limit(1);
 
-      console.log("lastmessage is: ", lastMsg);
+      // console.log("lastmessage is: ", lastMsg);
 
       if (!lastMsg[0]) {
         return;
@@ -53,6 +54,7 @@ exports.listChatroom = async (req, res, next) => {
 
 // Create a chatroom
 exports.createChatroom = async (req, res, next) => {
+  console.log('inside createChatroom')
   // console.log(req.body);
   //body is going to receive 2 things
   //1. participants - array of names
@@ -94,6 +96,22 @@ exports.showChatroom = async (req, res, next) => {
   return res.status(200).json({ success: true, chatroom: chatroom });
 };
 
+// Delete Chatroom
+
+exports.deleteChatroom = async (req, res, next) => {
+  const chatroomId = req.body
+
+  try {
+    console.log('inside deleteChatroom ',chatroomId)
+    await chatroomModel.deleteOne({ _id: chatroomId.chatId })
+    await messagesModel.deleteMany({chatId: chatroomId.chatId})
+    return res.status(200).json({ success: true, deleteChatroomId: chatroomId})
+
+  } catch (err) {
+    return next(new ErrorResponse("Failed to delete chat", 500))
+  }
+}
+
 // Lists the messages in a chat
 exports.listMessage = async (req, res, next) => {
   console.log("inside listMessage");
@@ -102,8 +120,6 @@ exports.listMessage = async (req, res, next) => {
   try {
     // console.log(`these are the req.params: ${JSON.stringify(req.params.chatroomId)}`);
     messages = await messagesModel.find({ chatId : req.params.chatroomId }).exec();
-//       // need to sort messages here by timestamp
-//       // and also install luxon to post currentTimenNow
   } catch (err) {
     return next(new ErrorResponse("Failed to fetch list messages", 500));
   }
@@ -113,13 +129,13 @@ exports.listMessage = async (req, res, next) => {
 
 // Creates a message
 exports.createMessage = async (req, res, next) => {
-  // console.log("inside createMessage");
+  console.log("inside createMessage");
   let message = req.body;
   message.timestamp = Date.now();
 
   try {
     const createdMessage = await messagesModel.create(message);
-    console.log(`createdMessage is: ${createdMessage}`);
+    // console.log(`createdMessage is: ${createdMessage}`);
     const chatroomDTO = await chatroomModel.findById(message.chatId);
     const participants = chatroomDTO.participants.map(
       (user) => ({

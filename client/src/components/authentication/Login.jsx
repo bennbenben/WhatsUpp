@@ -6,7 +6,7 @@ import axios from "axios";
 // Import internal components
 import { setLoadingTrue, userLoginSuccess, setLoadingFalse } from "../../data/Actions";
 import { Store } from "../../data/Store";
-import "./Login.css";
+import "./AuthForm.css";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -31,6 +31,7 @@ const Login = () => {
     
     // Keep JWT token in localStorage (change to cookie later)
     localStorage.setItem("authToken", response.data.token);
+    alert("Login successful")
     navigate("/");
 
   } catch (error) {
@@ -45,10 +46,10 @@ const Login = () => {
   return (
     <div className="login-page__main">
       <div className="login-page__container">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="" />
+        <img src="/fakewhatsapp.png" alt="" />
 
         <div className="login-page__title">
-          <h1>Sign in to Whats Upp</h1>
+          <h1>Sign in to WhatsUpp</h1>
         </div>
 
         <form className="login-page__form" onSubmit={loginHandler}>
@@ -69,15 +70,15 @@ const Login = () => {
             Login
           </button>
 
-          <span className="login-view__subtext">
+          <div className="login-view__subtext">
             Do not have an account?
             <Link to="/register">Register</Link>
-          </span>
+          </div>
 
-          <span className="login-view__subtext">
+          <div className="login-view__subtext">
             Forgot password?
             <Link to="/forgotpassword">Reset password</Link>
-          </span>
+          </div>
 
         </form>
       </div>

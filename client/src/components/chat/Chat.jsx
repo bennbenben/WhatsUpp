@@ -2,9 +2,10 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Avatar, IconButton } from "@mui/material";
-import { AttachFile, MoreVert, SearchOutlined } from "@mui/icons-material";
+import { AttachFile, MoreVert, SearchOutlined, WindowSharp } from "@mui/icons-material";
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
 import MicIcon from "@mui/icons-material/Mic";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 // Import internal components
 import { Store } from "../../data/Store";
@@ -57,7 +58,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
 
     return () => {
       currentSocket.emit("leave chat", chatroomId);
-      console.log(`chatroomId: ${chatroomId}`);
+      // console.log(`chatroomId: ${chatroomId}`);
     }
 
   }, [chatroomId]);
@@ -65,7 +66,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
   useEffect(() => {
     // real-time fetch messages
     currentSocket.on("message received", (newMessageReceived) => {
-      console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
+      // console.log(`[FE] JSON.stringify=>newMessageReceived: ${JSON.stringify(newMessageReceived)}`);
       // console.log(`messages before setMessages: ${JSON.stringify(messages)}`);
       setMessages(prevMsgs => {
         return [...prevMsgs, newMessageReceived]
@@ -96,7 +97,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
     };
     
     const response = await axios.post(`/api/v1/chat/${chatroomId}/message`, messageData, axiosConfig);
-    console.log("response is: ", response);
+    console.log("sendMessageHandler response is: ", response);
     
     setMessages([...messages, response.data.message]);
     currentSocket.emit("new message", response.data);
@@ -104,6 +105,38 @@ const Chat = ({ chatroomId, currentSocket }) => {
     
     setInput("");
   };
+
+  const deleteChatHandler = async (e) => {
+    e.preventDefault();
+
+    console.log('Deleting Chat')
+
+    let text = "Confirm Delete Chat?"
+    if (window.confirm(text) == true) {
+    // Delete request to DB
+    const axiosConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+      },
+      // data: {
+      //   "chatId": chatroomId,
+      // }
+    };
+
+    const deleteChatData = {
+      "chatId": chatroomId,
+    };
+    
+    const response = await axios.post(`/api/v1/chat/${chatroomId}/delete`, deleteChatData, axiosConfig);
+    console.log("deleteChat response is: ", response);
+    
+    // update the sidebar after deleting chat
+    alert("Delete Chat Successful")
+    window.location.reload()
+    }
+
+  }
 
   useEffect(() => {
     setSeedString(Math.floor(Math.random() * 5000));
@@ -145,6 +178,7 @@ const Chat = ({ chatroomId, currentSocket }) => {
           <IconButton><SearchOutlined /></IconButton>
           <IconButton><AttachFile /></IconButton>
           <IconButton><MoreVert /></IconButton>
+          <IconButton onClick={deleteChatHandler}><DeleteOutlineIcon className="button__delete" /></IconButton>
         </div>
       </div>
 

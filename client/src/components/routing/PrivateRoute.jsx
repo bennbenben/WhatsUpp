@@ -18,9 +18,9 @@ const PrivateRoute = () => {
     } else {
       const authToken = localStorage.getItem("authToken");
       const base64Payload = JSON.stringify(authToken).split(".")[1];
-      console.log("base64Payload:", base64Payload)
+      // console.log("base64Payload:", base64Payload)
       const currentUser = JSON.parse(window.atob(base64Payload));
-      console.log("currentUser in privateroute: ", currentUser);
+      // console.log("currentUser in privateroute: ", currentUser);
 
       const expiryDate = new Date(currentUser.exp * 1000);
       const currentDate = new Date(Date.now());
@@ -32,7 +32,7 @@ const PrivateRoute = () => {
       }
       
       dispatch(userLoginSuccess(currentUser));
-      console.log('dispatch from Private route happened');
+      // console.log('dispatch from Private route happened');
   }
   }, []);
 

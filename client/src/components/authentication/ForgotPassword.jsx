@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 
 // Import internal components
-import "./ForgotPassword.css";
+import "./AuthForm.css";
 import { Store } from "../../data/Store";
 import { setLoadingFalse, setLoadingTrue } from "../../data/Actions";
 
@@ -26,7 +26,7 @@ const ForgotPassword = () => {
     try {
       // API request to reset password
       const response = await axios.post("/api/v1/forgotpassword", { email }, axiosConfig);
-      console.log(`response data: ${response.data.description}`);
+      console.log(`forgotPasswordHandler response data: ${response.data.description}`);
       setSuccess(response.data.description);
       
     } catch (error) {
@@ -41,22 +41,23 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="forgotpassword-page__main">
+    <div className="login-page__main">
 
-      <div className="forgotpassword-page__container">
+      <div className="login-page__container">
+        <img src="/fakewhatsapp.png" alt="" />
 
-        <div className="forgotpassword-page__title">
+        <div className="login-page__title">
           <h1>Forgot Password</h1>
         </div>
 
-        <form className="forgotpassword-page__form" onSubmit={forgotPasswordHandler}>
+        <form className="login-page__form" onSubmit={forgotPasswordHandler}>
 
           {error && <span className="error-message">{error}</span>}
           {success && <span className="success-message">{success}</span>}
 
-          <span className="forgotpassword-view__subtext">
+          <div className="forgotpassword-view__subtext">
             Enter the email that you have registered the account with. We will send u a reset password email
-          </span>
+          </div>
 
           <div className="form-group">
             <label htmlFor="email">Email:</label>

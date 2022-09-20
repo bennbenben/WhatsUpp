@@ -6,7 +6,7 @@ import axios from "axios";
 // Import internal components
 import { Store } from "../../data/Store";
 import { setLoadingTrue, setLoadingFalse } from "../../data/Actions";
-import "./ResetPassword.css"
+import "./AuthForm.css"
 
 const ResetPassword = () => {
   const [password, setPassword] = useState("");
@@ -39,7 +39,7 @@ const ResetPassword = () => {
 
     try {
       const response = await axios.post(`/api/v1/resetpassword/${resetToken}`, { password }, axiosConfig);
-      console.log(`reponse.data is: ${JSON.stringify(response.data)}`);
+      console.log(`resetPasswordHandler reponse.data is: ${JSON.stringify(response.data)}`);
       setSuccess(response.data);
       dispatch(setLoadingFalse());
       navigate("/");
@@ -56,14 +56,15 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="resetpassword-page__main">
-      <div className="resetpassword-page__container">
+    <div className="login-page__main">
+      <div className="login-page__container">
+        <img src="/fakewhatsapp.png" alt="" />
 
-        <div className="resetpassword-page__title">
+        <div className="login-page__title">
           <h1>Forgot Password</h1>
         </div>
 
-        <form className="resetpassword-page__form" onSubmit={resetPasswordHandler}>
+        <form className="login-page__form" onSubmit={resetPasswordHandler}>
 
           {error && <span className="error-message">{error}</span>}
           {success && 

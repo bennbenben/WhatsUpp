@@ -50,7 +50,7 @@ io.of("/api/socket").on("connection", (socket) => {
 
   socket.on("new message", (newMessageReceived) => {
     const { message, participants } = newMessageReceived;
-    console.log('participants in BE ',participants)
+    // console.log('participants in BE ',participants)
 
     if (!participants) {
       return console.log("participants not defined");
